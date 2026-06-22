@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scenes/pets/CatPet.gd" id="1_cat"]
+
+[node name="CatPet" type="Node2D"]
+script = ExtResource("1_cat")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+offset = Vector2(0, -28)

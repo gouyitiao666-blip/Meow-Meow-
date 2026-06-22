@@ -1,0 +1,20 @@
+{
+  "crops": {
+    "carrot": {
+      "name": "Carrot",
+      "seed_item_id": "carrot_seed",
+      "harvest_item_id": "carrot",
+      "grow_time_seconds": 30,
+      "stage_assets": [
+        "res://assets/farming/carrot_stage_1.png",
+        "res://assets/farming/carrot_stage_2.png",
+        "res://assets/farming/carrot_stage_3.png",
+        "res://assets/farming/carrot_ready.png"
+      ],
+      "harvest_yield": {
+        "min": 1,
+        "max": 1
+      }
+    }
+  }
+}

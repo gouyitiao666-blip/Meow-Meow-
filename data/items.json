@@ -1,0 +1,60 @@
+{
+  "items": {
+    "carrot_seed": {
+      "name": "Carrot Seed",
+      "type": "seed",
+      "description": "A tiny seed that grows into a carrot.",
+      "icon": "res://assets/farming/carrot_seed_icon.png",
+      "max_stack": 99
+    },
+    "carrot": {
+      "name": "Carrot",
+      "type": "crop",
+      "description": "A crunchy carrot from the farm.",
+      "icon": "res://assets/farming/carrot_icon.png",
+      "max_stack": 99
+    },
+    "small_fish": {
+      "name": "Small Fish",
+      "type": "fish",
+      "description": "A small shiny fish from the river.",
+      "icon": "res://assets/fishing/small_fish_icon.png",
+      "max_stack": 99
+    },
+    "wood": {
+      "name": "Wood",
+      "type": "resource",
+      "description": "A useful piece of wood.",
+      "icon": "res://assets/nature/log.png",
+      "max_stack": 99
+    },
+    "stone": {
+      "name": "Stone",
+      "type": "resource",
+      "description": "A smooth little stone.",
+      "icon": "res://assets/nature/rock.png",
+      "max_stack": 99
+    },
+    "flower": {
+      "name": "Flower",
+      "type": "collectible",
+      "description": "A cute wild flower.",
+      "icon": "res://assets/nature/flower.png",
+      "max_stack": 99
+    },
+    "cat_food": {
+      "name": "Cat Food",
+      "type": "pet",
+      "description": "A small treat for a friendly cat.",
+      "icon": "res://assets/pets/cat_idle.png",
+      "max_stack": 99
+    },
+    "coin": {
+      "name": "Coin",
+      "type": "currency",
+      "description": "A shiny village coin.",
+      "icon": "res://assets/ui/button.png",
+      "max_stack": 9999
+    }
+  }
+}
