@@ -165,7 +165,7 @@ def component_boxes(img: Image.Image, min_area: int) -> list[tuple[int, int, int
     return ordered
 
 
-def export_component(sheet: Image.Image, box: tuple[int, int, int, int], name: str, size: tuple[int, int]) -> None:
+def export_component(sheet: Image.Image, box: tuple[int, int, int, int], name: str, size: tuple[int, int], stretch: bool = False) -> None:
     keyed = remove_magenta(sheet)
     pad = 16
     box = (
@@ -178,7 +178,11 @@ def export_component(sheet: Image.Image, box: tuple[int, int, int, int], name: s
     bbox = alpha_bbox(art)
     if bbox is not None:
         art = art.crop(bbox)
-    art.thumbnail((max(1, int(size[0] * 0.94)), max(1, int(size[1] * 0.88))), Image.Resampling.LANCZOS)
+    max_size = (max(1, int(size[0] * 0.94)), max(1, int(size[1] * 0.88)))
+    if stretch:
+        art = art.resize(max_size, Image.Resampling.LANCZOS)
+    else:
+        art.thumbnail(max_size, Image.Resampling.LANCZOS)
     out = Image.new("RGBA", size, (0, 0, 0, 0))
     out.alpha_composite(art, ((size[0] - art.width) // 2, (size[1] - art.height) // 2))
     OUT.mkdir(parents=True, exist_ok=True)
@@ -213,15 +217,38 @@ def main() -> None:
     panel_boxes = component_boxes(panel_sheet, min_area=2500)
     if len(panel_boxes) < len(PANELS):
         raise RuntimeError(f"Expected at least {len(PANELS)} panel components, found {len(panel_boxes)}")
+    stretch_panels = {
+        "tool_hotbar.png",
+        "dialogue_box.png",
+        "dialogue_nameplate.png",
+        "resume_button.png",
+        "save_button.png",
+        "toast_panel.png",
+        "item_popup_panel.png",
+    }
     for box, (name, size) in zip(panel_boxes, PANELS):
-        export_component(panel_sheet, box, name, size)
+        export_component(panel_sheet, box, name, size, stretch=name in stretch_panels)
 
-    x_edges = [0, 350, 700, 1050, icon_sheet.width]
-    y_edges = [0, 290, 500, 710, 930, icon_sheet.height]
+    x_centers = [210, 560, 910, 1255]
+    y_centers = [150, 395, 610, 810, 1015]
+    half_w = 145
+    half_h = 98
     for index, (name, size) in enumerate(ICONS):
         row = index // 4
         col = index % 4
-        export_box(icon_sheet, (x_edges[col], y_edges[row], x_edges[col + 1], y_edges[row + 1]), name, size)
+        cx = x_centers[col]
+        cy = y_centers[row]
+        export_box(
+            icon_sheet,
+            (
+                max(0, cx - half_w),
+                max(0, cy - half_h),
+                min(icon_sheet.width, cx + half_w),
+                min(icon_sheet.height, cy + half_h),
+            ),
+            name,
+            size,
+        )
 
     build_preview([name for name, _size in PANELS + ICONS])
 

@@ -115,6 +115,13 @@ Shared task board between **Claude (Manager + Frontend)** and **Codex
   the feet-anchored origin.
 - Player & cat sprites are shadow-free. Also cleaned a stray detached blob
   baked into the bottom of `cat_walk_right.png` (cleared rows ≥64).
+- ⚠️ **Cat walk sheets shipped vertically misaligned per frame** — `cat_walk_left`
+  feet were `[92,92,72,71]` (cat jumped mid-cycle) and `cat_walk_right` was
+  `[62,61,62,61]` (floating). I normalized every cat frame to a common feet
+  baseline (row 92) via a central-band feet detector. **Codex: the generator
+  should emit frames with a consistent feet baseline per direction.**
+- Cat follow movement is now **eased** (smoothed velocity + distance-scaled
+  speed + anim `speed_scale`) instead of snapping on/off at the follow gap.
 - ⚠️ **Several regenerated nature assets shipped with a stray "second blob"**
   baked into the same PNG (a floating grass tuft at the TOP of `rock.png`, and
   stray top specks in `flower.png` / `log.png`). I extracted just the main object

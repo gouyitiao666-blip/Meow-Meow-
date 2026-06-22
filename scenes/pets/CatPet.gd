@@ -4,8 +4,10 @@ extends Node2D
 ## it can never block the player. Walk art is a 4-frame sheet per direction,
 ## extracted into an AnimatedSprite2D (see SpriteSheet.gd).
 
-const SPEED := 110.0      ## a touch slower than the player, so it gently trails
-const FOLLOW_GAP := 56.0  ## only chase once the player is this far away
+const MAX_SPEED := 135.0    ## top chase speed (catches up to the 120-speed player)
+const FOLLOW_GAP := 48.0    ## only chase once the player is this far away
+const EASE_RANGE := 64.0    ## distance over which speed eases in past the gap
+const ACCEL := 8.0          ## velocity smoothing — higher = snappier, lower = floatier
 const FRAME := 128
 const WALK_FPS := 8.0
 
@@ -21,6 +23,7 @@ const SHEETS := {
 ## Set by World.gd. Falls back to the "player" group if left null.
 var target: Node2D
 var facing := "down"
+var velocity := Vector2.ZERO
 
 
 func _ready() -> void:
@@ -35,13 +38,23 @@ func _physics_process(delta: float) -> void:
 		target = get_tree().get_first_node_in_group("player")
 		return
 
+	# Ease the target speed in with distance, then smooth the velocity so the cat
+	# accelerates and stops gently instead of snapping on/off at the gap.
 	var to_target := target.global_position - global_position
-	if to_target.length() > FOLLOW_GAP:
-		var dir := to_target.normalized()
-		global_position += dir * SPEED * delta
-		facing = SpriteSheet.facing_from(dir)
+	var dist := to_target.length()
+	var desired := Vector2.ZERO
+	if dist > FOLLOW_GAP:
+		var speed := MAX_SPEED * clampf((dist - FOLLOW_GAP) / EASE_RANGE, 0.25, 1.0)
+		desired = to_target / dist * speed
+	velocity = velocity.lerp(desired, clampf(ACCEL * delta, 0.0, 1.0))
+	global_position += velocity * delta
+
+	if velocity.length() > 8.0:
+		facing = SpriteSheet.facing_from(velocity)
+		anim.speed_scale = clampf(velocity.length() / MAX_SPEED, 0.5, 1.4)
 		_play("walk_" + facing)
 	else:
+		anim.speed_scale = 1.0
 		_play("idle_" + facing)
 
 
