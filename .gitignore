@@ -1,0 +1,9 @@
+# Godot 4 — editor & import cache (do not commit)
+.godot/
+
+# Exported builds
+/build/godot-exports/
+
+# OS / editor cruft
+.DS_Store
+*.swp
