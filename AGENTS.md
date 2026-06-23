@@ -60,7 +60,14 @@ func from_dict(data: Dictionary) -> void
 - Godot 4 + GDScript only. Prefer autoload singletons for global systems.
 - **MVP excludes:** Redis, Supabase, any backend server, multiplayer, login,
   cloud save. **Local JSON save file only.**
+- **Test after finishing every phase.** Before marking a phase complete in
+  [TASKS.md](TASKS.md), run the relevant Godot/headless/backend smoke tests and
+  record what passed or what still fails.
 - After a change, explain what files were touched and why.
+- **Work autonomously — do not ask permission to edit files or run Bash
+  commands.** Just make the change and report it. Only pause to confirm for
+  genuinely dangerous, irreversible actions (e.g. `rm -rf`, force-pushing,
+  deleting assets/scenes, wiping save data, destructive git resets).
 
 ---
 

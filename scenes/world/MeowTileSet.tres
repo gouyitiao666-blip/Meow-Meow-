@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=15 format=3]
+[gd_resource type="TileSet" load_steps=31 format=3]
 
 [ext_resource type="Texture2D" path="res://assets/tiles/grass_tile.png" id="1_grass"]
 [ext_resource type="Texture2D" path="res://assets/tiles/dirt_path_tile.png" id="2_path"]
@@ -7,6 +7,14 @@
 [ext_resource type="Texture2D" path="res://assets/tiles/farm_soil_tile.png" id="5_soil"]
 [ext_resource type="Texture2D" path="res://assets/tiles/wet_soil_tile.png" id="6_wsoil"]
 [ext_resource type="Texture2D" path="res://assets/tiles/bridge_tile.png" id="7_bridge"]
+[ext_resource type="Texture2D" path="res://assets/tiles/water_edge_top.png" id="8_wtop"]
+[ext_resource type="Texture2D" path="res://assets/tiles/water_edge_bottom.png" id="9_wbot"]
+[ext_resource type="Texture2D" path="res://assets/tiles/water_edge_left.png" id="10_wleft"]
+[ext_resource type="Texture2D" path="res://assets/tiles/water_edge_right.png" id="11_wright"]
+[ext_resource type="Texture2D" path="res://assets/tiles/water_corner_top_left.png" id="12_wctl"]
+[ext_resource type="Texture2D" path="res://assets/tiles/water_corner_top_right.png" id="13_wctr"]
+[ext_resource type="Texture2D" path="res://assets/tiles/water_corner_bottom_left.png" id="14_wcbl"]
+[ext_resource type="Texture2D" path="res://assets/tiles/water_corner_bottom_right.png" id="15_wcbr"]
 
 [sub_resource type="TileSetAtlasSource" id="src_grass"]
 texture = ExtResource("1_grass")
@@ -43,6 +51,46 @@ texture = ExtResource("7_bridge")
 texture_region_size = Vector2i(64, 64)
 0:0/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="src_wtop"]
+texture = ExtResource("8_wtop")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="src_wbot"]
+texture = ExtResource("9_wbot")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="src_wleft"]
+texture = ExtResource("10_wleft")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="src_wright"]
+texture = ExtResource("11_wright")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="src_wctl"]
+texture = ExtResource("12_wctl")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="src_wctr"]
+texture = ExtResource("13_wctr")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="src_wcbl"]
+texture = ExtResource("14_wcbl")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="src_wcbr"]
+texture = ExtResource("15_wcbr")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
 [resource]
 tile_size = Vector2i(64, 64)
 sources/0 = SubResource("src_grass")
@@ -52,3 +100,11 @@ sources/3 = SubResource("src_wedge")
 sources/4 = SubResource("src_soil")
 sources/5 = SubResource("src_wsoil")
 sources/6 = SubResource("src_bridge")
+sources/7 = SubResource("src_wtop")
+sources/8 = SubResource("src_wbot")
+sources/9 = SubResource("src_wleft")
+sources/10 = SubResource("src_wright")
+sources/11 = SubResource("src_wctl")
+sources/12 = SubResource("src_wctr")
+sources/13 = SubResource("src_wcbl")
+sources/14 = SubResource("src_wcbr")

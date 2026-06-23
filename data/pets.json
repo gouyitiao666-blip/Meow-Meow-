@@ -1,0 +1,76 @@
+{
+  "pets": {
+    "cat": {
+      "name": "Cat",
+      "species": "cat",
+      "description": "A loyal cat friend who follows the player.",
+      "unlocked_by_default": true,
+      "follow_distance": 48,
+      "move_speed": 110,
+      "idle_asset": "res://assets/pets/cat_idle.png",
+      "sleep_asset": "res://assets/pets/cat_sleep.png",
+      "happy_emote_asset": "res://assets/ui/pet_heart_emote.png",
+      "favorite_item_id": "catnip",
+      "walk_assets": {
+        "down": "res://assets/pets/cat_walk_down.png",
+        "up": "res://assets/pets/cat_walk_up.png",
+        "left": "res://assets/pets/cat_walk_left.png",
+        "right": "res://assets/pets/cat_walk_right.png"
+      }
+    },
+    "dog": {
+      "name": "Dog",
+      "species": "dog",
+      "description": "A cheerful dog friend for the home area.",
+      "unlocked_by_default": false,
+      "follow_distance": 56,
+      "move_speed": 120,
+      "idle_asset": "res://assets/pets/dog_idle.png",
+      "sleep_asset": "res://assets/pets/dog_sleep.png",
+      "happy_emote_asset": "res://assets/pets/dog_happy_emote.png",
+      "favorite_item_id": "pet_food",
+      "walk_assets": {
+        "down": "res://assets/pets/dog_walk_down.png",
+        "up": "res://assets/pets/dog_walk_up.png",
+        "left": "res://assets/pets/dog_walk_left.png",
+        "right": "res://assets/pets/dog_walk_right.png"
+      }
+    },
+    "duck": {
+      "name": "Duck",
+      "species": "duck",
+      "description": "A tiny duck friend for ponds and rivers.",
+      "unlocked_by_default": false,
+      "follow_distance": 44,
+      "move_speed": 95,
+      "idle_asset": "res://assets/pets/duck_idle.png",
+      "sleep_asset": "res://assets/pets/duck_sleep.png",
+      "happy_emote_asset": "res://assets/pets/duck_happy_emote.png",
+      "favorite_item_id": "pet_food",
+      "walk_assets": {
+        "down": "res://assets/pets/duck_walk_down.png",
+        "up": "res://assets/pets/duck_walk_up.png",
+        "left": "res://assets/pets/duck_walk_left.png",
+        "right": "res://assets/pets/duck_walk_right.png"
+      }
+    },
+    "bunny": {
+      "name": "Bunny",
+      "species": "bunny",
+      "description": "A soft bunny friend for the farm area.",
+      "unlocked_by_default": false,
+      "follow_distance": 44,
+      "move_speed": 115,
+      "idle_asset": "res://assets/pets/bunny_idle.png",
+      "sleep_asset": "res://assets/pets/bunny_sleep.png",
+      "happy_emote_asset": "res://assets/pets/bunny_happy_emote.png",
+      "favorite_item_id": "carrot",
+      "walk_assets": {
+        "down": "res://assets/pets/bunny_walk_down.png",
+        "up": "res://assets/pets/bunny_walk_up.png",
+        "left": "res://assets/pets/bunny_walk_left.png",
+        "right": "res://assets/pets/bunny_walk_right.png"
+      }
+    }
+  }
+}

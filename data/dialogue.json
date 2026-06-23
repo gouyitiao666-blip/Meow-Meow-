@@ -1,0 +1,48 @@
+{
+  "npcs": {
+    "farmer": {
+      "name": "Mina",
+      "role": "farmer",
+      "sprite": "res://assets/npc/npc_farmer_idle.png",
+      "portrait": "res://assets/npc/farmer_portrait.png",
+      "greeting": "The soil feels happy today.",
+      "lines": [
+        "Watered crops grow with a little extra courage.",
+        "Strawberries are gentle, but pumpkins like to take their time."
+      ]
+    },
+    "fisher": {
+      "name": "Finn",
+      "role": "fisher",
+      "sprite": "res://assets/npc/npc_fisher_idle.png",
+      "portrait": "res://assets/npc/fisher_portrait.png",
+      "greeting": "The river is calm. Good fishing weather.",
+      "lines": [
+        "Some fish bite quickly, and some make you wait.",
+        "Try a pond when you want something unusual."
+      ]
+    },
+    "shopkeeper": {
+      "name": "Poppy",
+      "role": "shopkeeper",
+      "sprite": "res://assets/npc/npc_shopkeeper_idle.png",
+      "portrait": "res://assets/npc/shopkeeper_portrait.png",
+      "greeting": "Welcome in. I kept the seed shelf tidy for you.",
+      "lines": [
+        "A full bag of seeds is the start of a good morning.",
+        "Bring crops back any time if you want to sell them."
+      ]
+    },
+    "villager": {
+      "name": "Nori",
+      "role": "villager",
+      "sprite": "res://assets/npc/npc_villager_idle.png",
+      "portrait": "res://assets/npc/villager_portrait.png",
+      "greeting": "I hope your pet is having a cozy day.",
+      "lines": [
+        "The village feels warmer when the lamps turn on.",
+        "A bench near flowers is my favorite place to rest."
+      ]
+    }
+  }
+}

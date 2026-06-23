@@ -12,48 +12,175 @@
       "type": "crop",
       "description": "A crunchy carrot from the farm.",
       "icon": "res://assets/farming/carrot_icon.png",
+      "max_stack": 99,
+      "sell_price": 8
+    },
+    "strawberry_seed": {
+      "name": "Strawberry Seed",
+      "type": "seed",
+      "description": "A small seed for sweet strawberries.",
+      "icon": "res://assets/farming/strawberry_seed_icon.png",
       "max_stack": 99
+    },
+    "strawberry": {
+      "name": "Strawberry",
+      "type": "crop",
+      "description": "A sweet red strawberry.",
+      "icon": "res://assets/farming/strawberry_icon.png",
+      "max_stack": 99,
+      "sell_price": 14
+    },
+    "tomato_seed": {
+      "name": "Tomato Seed",
+      "type": "seed",
+      "description": "A seed for a juicy tomato plant.",
+      "icon": "res://assets/farming/tomato_seed_icon.png",
+      "max_stack": 99
+    },
+    "tomato": {
+      "name": "Tomato",
+      "type": "crop",
+      "description": "A bright tomato from the garden.",
+      "icon": "res://assets/farming/tomato_icon.png",
+      "max_stack": 99,
+      "sell_price": 12
+    },
+    "pumpkin_seed": {
+      "name": "Pumpkin Seed",
+      "type": "seed",
+      "description": "A seed for a cozy autumn pumpkin.",
+      "icon": "res://assets/farming/pumpkin_seed_icon.png",
+      "max_stack": 99
+    },
+    "pumpkin": {
+      "name": "Pumpkin",
+      "type": "crop",
+      "description": "A round orange pumpkin.",
+      "icon": "res://assets/farming/pumpkin_icon.png",
+      "max_stack": 99,
+      "sell_price": 28
+    },
+    "catnip_seed": {
+      "name": "Catnip Seed",
+      "type": "seed",
+      "description": "A seed for a fragrant pet-friendly herb.",
+      "icon": "res://assets/farming/catnip_seed_icon.png",
+      "max_stack": 99
+    },
+    "catnip": {
+      "name": "Catnip",
+      "type": "crop",
+      "description": "A cozy herb that pets enjoy.",
+      "icon": "res://assets/farming/catnip_icon.png",
+      "max_stack": 99,
+      "sell_price": 18
     },
     "small_fish": {
       "name": "Small Fish",
       "type": "fish",
       "description": "A small shiny fish from the river.",
       "icon": "res://assets/fishing/small_fish_icon.png",
-      "max_stack": 99
+      "max_stack": 99,
+      "sell_price": 10
+    },
+    "golden_fish": {
+      "name": "Golden Fish",
+      "type": "fish",
+      "description": "A lucky golden fish.",
+      "icon": "res://assets/fishing/golden_fish_icon.png",
+      "max_stack": 99,
+      "sell_price": 45
+    },
+    "catfish": {
+      "name": "Catfish",
+      "type": "fish",
+      "description": "A whiskered pond fish.",
+      "icon": "res://assets/fishing/catfish_icon.png",
+      "max_stack": 99,
+      "sell_price": 22
+    },
+    "sleepy_fish": {
+      "name": "Sleepy Fish",
+      "type": "fish",
+      "description": "A calm fish that looks ready for a nap.",
+      "icon": "res://assets/fishing/sleepy_fish_icon.png",
+      "max_stack": 99,
+      "sell_price": 18
+    },
+    "bubble_fish": {
+      "name": "Bubble Fish",
+      "type": "fish",
+      "description": "A round fish from bubbly water.",
+      "icon": "res://assets/fishing/bubble_fish_icon.png",
+      "max_stack": 99,
+      "sell_price": 26
+    },
+    "rare_fish": {
+      "name": "Rare Fish",
+      "type": "fish",
+      "description": "A colorful fish that is hard to find.",
+      "icon": "res://assets/fishing/rare_fish_icon.png",
+      "max_stack": 99,
+      "sell_price": 80
     },
     "wood": {
       "name": "Wood",
       "type": "resource",
       "description": "A useful piece of wood.",
-      "icon": "res://assets/nature/log.png",
-      "max_stack": 99
+      "icon": "res://assets/items/wood_icon.png",
+      "drop_asset": "res://assets/items/wood_drop.png",
+      "max_stack": 99,
+      "sell_price": 2
     },
     "stone": {
       "name": "Stone",
       "type": "resource",
       "description": "A smooth little stone.",
-      "icon": "res://assets/nature/rock.png",
-      "max_stack": 99
+      "icon": "res://assets/items/stone_icon.png",
+      "drop_asset": "res://assets/items/stone_drop.png",
+      "max_stack": 99,
+      "sell_price": 2
+    },
+    "shell": {
+      "name": "Shell",
+      "type": "collectible",
+      "description": "A small shell from the shore.",
+      "icon": "res://assets/items/shell_icon.png",
+      "drop_asset": "res://assets/items/shell_drop.png",
+      "max_stack": 99,
+      "sell_price": 6
+    },
+    "mushroom": {
+      "name": "Mushroom",
+      "type": "collectible",
+      "description": "A cute forest mushroom.",
+      "icon": "res://assets/items/mushroom_icon.png",
+      "drop_asset": "res://assets/items/mushroom_drop.png",
+      "max_stack": 99,
+      "sell_price": 7
     },
     "flower": {
       "name": "Flower",
       "type": "collectible",
       "description": "A cute wild flower.",
-      "icon": "res://assets/nature/flower.png",
-      "max_stack": 99
+      "icon": "res://assets/items/flower_icon.png",
+      "drop_asset": "res://assets/items/flower_drop.png",
+      "max_stack": 99,
+      "sell_price": 5
     },
-    "cat_food": {
-      "name": "Cat Food",
+    "pet_food": {
+      "name": "Pet Food",
       "type": "pet",
-      "description": "A small treat for a friendly cat.",
-      "icon": "res://assets/pets/cat_idle.png",
+      "description": "A small treat for a friendly pet.",
+      "icon": "res://assets/items/pet_food_icon.png",
+      "drop_asset": "res://assets/items/pet_food_drop.png",
       "max_stack": 99
     },
     "coin": {
       "name": "Coin",
       "type": "currency",
       "description": "A shiny village coin.",
-      "icon": "res://assets/ui/button.png",
+      "icon": "res://assets/ui/coin_small_icon.png",
       "max_stack": 9999
     }
   }

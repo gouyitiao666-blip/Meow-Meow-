@@ -1,0 +1,124 @@
+{
+  "decorations": {
+    "fence_straight": {
+      "name": "Fence",
+      "category": "boundary",
+      "description": "A simple wooden fence for cozy yards and farm edges.",
+      "asset": "res://assets/buildings/fence_straight.png",
+      "solid": true,
+      "cost": 5,
+      "footprint": { "w": 1, "h": 1 }
+    },
+    "fence_corner": {
+      "name": "Fence Corner",
+      "category": "boundary",
+      "description": "A corner piece for wooden fences.",
+      "asset": "res://assets/buildings/fence_corner.png",
+      "solid": true,
+      "cost": 5,
+      "footprint": { "w": 1, "h": 1 }
+    },
+    "pet_bed": {
+      "name": "Pet Bed",
+      "category": "pet",
+      "description": "A soft bed for a pet friend near home.",
+      "asset": "res://assets/buildings/pet_bed.png",
+      "solid": true,
+      "cost": 25,
+      "footprint": { "w": 2, "h": 2 }
+    },
+    "wooden_crate": {
+      "name": "Wooden Crate",
+      "category": "storage",
+      "description": "A small crate for rustic decoration.",
+      "asset": "res://assets/buildings/wooden_crate.png",
+      "solid": true,
+      "cost": 15,
+      "footprint": { "w": 1, "h": 1 }
+    },
+    "flower_pot": {
+      "name": "Flower Pot",
+      "category": "nature",
+      "description": "A small pot of cheerful flowers.",
+      "asset": "res://assets/buildings/flower_pot.png",
+      "solid": true,
+      "cost": 12,
+      "footprint": { "w": 1, "h": 1 }
+    },
+    "bush": {
+      "name": "Bush",
+      "category": "nature",
+      "description": "A rounded leafy bush.",
+      "asset": "res://assets/nature/bush.png",
+      "solid": true,
+      "cost": 10,
+      "footprint": { "w": 1, "h": 1 }
+    },
+    "bench": {
+      "name": "Bench",
+      "category": "village",
+      "description": "A cozy place to sit outside.",
+      "asset": "res://assets/buildings/bench.png",
+      "solid": true,
+      "cost": 35,
+      "footprint": { "w": 2, "h": 1 }
+    },
+    "lantern": {
+      "name": "Lantern",
+      "category": "light",
+      "description": "A warm lantern for soft evening light.",
+      "asset": "res://assets/buildings/lantern.png",
+      "animated_asset": "res://assets/animated/lantern_glow_animated.png",
+      "solid": true,
+      "cost": 30,
+      "footprint": { "w": 1, "h": 1 }
+    },
+    "mushroom_lamp": {
+      "name": "Mushroom Lamp",
+      "category": "light",
+      "description": "A whimsical mushroom-shaped lamp.",
+      "asset": "res://assets/buildings/mushroom_lamp.png",
+      "animated_asset": "res://assets/animated/mushroom_lamp_glow_animated.png",
+      "solid": true,
+      "cost": 40,
+      "footprint": { "w": 1, "h": 1 }
+    },
+    "garden_arch": {
+      "name": "Garden Arch",
+      "category": "village",
+      "description": "A flower-covered arch for garden paths.",
+      "asset": "res://assets/buildings/garden_arch.png",
+      "solid": true,
+      "cost": 80,
+      "footprint": { "w": 2, "h": 1 }
+    },
+    "small_well": {
+      "name": "Small Well",
+      "category": "village",
+      "description": "A tiny village well.",
+      "asset": "res://assets/buildings/small_well.png",
+      "solid": true,
+      "cost": 75,
+      "footprint": { "w": 2, "h": 2 }
+    },
+    "street_lamp": {
+      "name": "Street Lamp",
+      "category": "light",
+      "description": "A tall lamp for village paths.",
+      "asset": "res://assets/buildings/street_lamp.png",
+      "solid": true,
+      "cost": 55,
+      "footprint": { "w": 1, "h": 1 }
+    },
+    "fountain": {
+      "name": "Fountain",
+      "category": "village",
+      "description": "A cheerful fountain with gentle water.",
+      "asset": "res://assets/buildings/fountain.png",
+      "animated_asset": "res://assets/animated/fountain_water_animated.png",
+      "solid": true,
+      "cost": 120,
+      "footprint": { "w": 2, "h": 2 }
+    }
+  }
+}

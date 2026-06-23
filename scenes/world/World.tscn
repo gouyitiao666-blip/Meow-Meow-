@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scenes/world/World.gd" id="1_world"]
 [ext_resource type="TileSet" path="res://scenes/world/MeowTileSet.tres" id="2_tileset"]
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="3_player"]
 [ext_resource type="PackedScene" path="res://scenes/pets/CatPet.tscn" id="4_cat"]
+[ext_resource type="PackedScene" path="res://scenes/ui/InventoryUI.tscn" id="5_invui"]
 
 [node name="World" type="Node2D"]
 y_sort_enabled = true
@@ -17,3 +18,5 @@ position = Vector2(384, 384)
 
 [node name="CatPet" parent="." instance=ExtResource("4_cat")]
 position = Vector2(304, 384)
+
+[node name="InventoryUI" parent="." instance=ExtResource("5_invui")]

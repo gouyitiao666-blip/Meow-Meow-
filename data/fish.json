@@ -1,0 +1,54 @@
+{
+  "spots": {
+    "river": {
+      "name": "River",
+      "min_wait_seconds": 2.0,
+      "max_wait_seconds": 4.0,
+      "rewards": [
+        {
+          "item_id": "small_fish",
+          "weight": 100,
+          "min_amount": 1,
+          "max_amount": 1
+        }
+      ]
+    },
+    "pond": {
+      "name": "Pond",
+      "min_wait_seconds": 3.0,
+      "max_wait_seconds": 5.0,
+      "rewards": [
+        {
+          "item_id": "catfish",
+          "weight": 30,
+          "min_amount": 1,
+          "max_amount": 1
+        },
+        {
+          "item_id": "sleepy_fish",
+          "weight": 35,
+          "min_amount": 1,
+          "max_amount": 1
+        },
+        {
+          "item_id": "bubble_fish",
+          "weight": 22,
+          "min_amount": 1,
+          "max_amount": 1
+        },
+        {
+          "item_id": "golden_fish",
+          "weight": 8,
+          "min_amount": 1,
+          "max_amount": 1
+        },
+        {
+          "item_id": "rare_fish",
+          "weight": 5,
+          "min_amount": 1,
+          "max_amount": 1
+        }
+      ]
+    }
+  }
+}

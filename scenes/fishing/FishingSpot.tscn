@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scenes/fishing/FishingSpot.gd" id="1_fishing_spot"]
+[ext_resource type="Texture2D" path="res://assets/fishing/bobber.png" id="2_bobber"]
+[ext_resource type="Texture2D" path="res://assets/ui/fish_prompt_icon.png" id="3_prompt"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fishing_area"]
+radius = 72.0
+
+[node name="FishingSpot" type="Area2D"]
+script = ExtResource("1_fishing_spot")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_fishing_area")
+
+[node name="Bobber" type="Sprite2D" parent="."]
+texture = ExtResource("2_bobber")
+scale = Vector2(0.55, 0.55)
+
+[node name="Prompt" type="Sprite2D" parent="."]
+position = Vector2(0, -42)
+texture = ExtResource("3_prompt")
+scale = Vector2(0.6, 0.6)
+
+[node name="CatchTimer" type="Timer" parent="."]
+one_shot = true

@@ -68,7 +68,14 @@ inventory_ui.refresh()                  # my UI re-reads backend state
 - Godot 4 + GDScript only.
 - **MVP excludes:** Redis, Supabase, any backend server, multiplayer, login,
   cloud save. Local save file only.
+- **Test after finishing every phase.** Before marking a phase complete in
+  [TASKS.md](TASKS.md), run the relevant Godot/headless/gameplay smoke tests and
+  record what passed or what still fails.
 - After a change, explain what files were touched and why.
+- **Work autonomously — do not ask permission to edit files or run Bash
+  commands.** Just make the change and report it. Only pause to confirm for
+  genuinely dangerous, irreversible actions (e.g. `rm -rf`, force-pushing,
+  deleting assets/scenes, wiping save data, destructive git resets).
 
 ---
 

@@ -1,20 +1,84 @@
 {
   "crops": {
-    "carrot": {
-      "name": "Carrot",
-      "seed_item_id": "carrot_seed",
-      "harvest_item_id": "carrot",
-      "grow_time_seconds": 30,
-      "stage_assets": [
-        "res://assets/farming/carrot_stage_1.png",
-        "res://assets/farming/carrot_stage_2.png",
-        "res://assets/farming/carrot_stage_3.png",
+	"carrot": {
+	  "name": "Carrot",
+	  "seed_item_id": "carrot_seed",
+	  "harvest_item_id": "carrot",
+	  "grow_time_seconds": 30,
+	  "stage_assets": [
+		"res://assets/farming/carrot_stage_1.png",
+		"res://assets/farming/carrot_stage_2.png",
+		"res://assets/farming/carrot_stage_3.png",
         "res://assets/farming/carrot_ready.png"
-      ],
-      "harvest_yield": {
-        "min": 1,
-        "max": 1
-      }
-    }
+	  ],
+	  "harvest_yield": {
+		"min": 1,
+		"max": 1
+	  }
+	},
+	"strawberry": {
+	  "name": "Strawberry",
+	  "seed_item_id": "strawberry_seed",
+	  "harvest_item_id": "strawberry",
+	  "grow_time_seconds": 45,
+	  "stage_assets": [
+		"res://assets/farming/strawberry_stage_1.png",
+		"res://assets/farming/strawberry_stage_2.png",
+		"res://assets/farming/strawberry_stage_3.png",
+        "res://assets/farming/strawberry_ready.png"
+	  ],
+	  "harvest_yield": {
+		"min": 1,
+		"max": 2
+	  }
+	},
+	"tomato": {
+	  "name": "Tomato",
+	  "seed_item_id": "tomato_seed",
+	  "harvest_item_id": "tomato",
+	  "grow_time_seconds": 50,
+	  "stage_assets": [
+		"res://assets/farming/tomato_stage_1.png",
+		"res://assets/farming/tomato_stage_2.png",
+		"res://assets/farming/tomato_stage_3.png",
+        "res://assets/farming/tomato_ready.png"
+	  ],
+	  "harvest_yield": {
+		"min": 1,
+		"max": 2
+	  }
+	},
+	"pumpkin": {
+	  "name": "Pumpkin",
+	  "seed_item_id": "pumpkin_seed",
+	  "harvest_item_id": "pumpkin",
+	  "grow_time_seconds": 90,
+	  "stage_assets": [
+		"res://assets/farming/pumpkin_stage_1.png",
+		"res://assets/farming/pumpkin_stage_2.png",
+		"res://assets/farming/pumpkin_stage_3.png",
+        "res://assets/farming/pumpkin_ready.png"
+	  ],
+	  "harvest_yield": {
+		"min": 1,
+		"max": 1
+	  }
+	},
+	"catnip": {
+	  "name": "Catnip",
+	  "seed_item_id": "catnip_seed",
+	  "harvest_item_id": "catnip",
+	  "grow_time_seconds": 40,
+	  "stage_assets": [
+		"res://assets/farming/catnip_stage_1.png",
+		"res://assets/farming/catnip_stage_2.png",
+		"res://assets/farming/catnip_stage_3.png",
+        "res://assets/farming/catnip_ready.png"
+	  ],
+	  "harvest_yield": {
+		"min": 1,
+		"max": 3
+	  }
+	}
   }
 }
