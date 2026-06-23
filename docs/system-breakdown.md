@@ -33,9 +33,10 @@
 - **Purpose:** The tile-based open world + collisions + prop placement.
 - **Main files:** `scenes/world/World.tscn`, `scenes/world/World.gd`,
   `scenes/world/MeowTileSet.tres`.
-- **Status:** Implemented. 40×28 map built from code: forest, river+bridge,
-  paths, farm, home; border walls + per-tile water collision (bridge excluded);
-  nature props placed with a reservation + spacing guard, all solid.
+- **Status:** Implemented. 52×46 map built from code: forest, river+bridge,
+  pond, paths, farm, home, shop, workbench; border walls + per-tile water
+  collision (bridge excluded); nature props placed with a reservation + spacing
+  guard, all solid. NPCs + ambient pets have solid footprints too.
 - **Next step:** If decoration placement lands, let player-placed objects share
   the same reservation/collision approach.
 

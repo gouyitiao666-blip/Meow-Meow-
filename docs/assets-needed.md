@@ -3,6 +3,12 @@
 > Status derived from the actual `assets/` folder (2026-06-23).
 > Legend: **Existing** = file present · **Missing** = needed but absent ·
 > **Unknown** = unclear purpose / can't confirm fit without seeing it in-game.
+>
+> **Note:** the Phase 6–11 asset packs greatly expanded the library — now present:
+> all pets (cat/dog/duck/bunny/eagle/penguin), NPC villagers (idle/walk/portrait),
+> biome tiles (beach/ocean/mountain/moss/snow/cave), ores/crab/shell/glowing-mushroom
+> items, season/weather/festival effects, and 2 music tracks. Mostly-missing now:
+> **interior wall/floor/door tiles**, and a few creature sheets (crab/bird).
 
 ## Player assets
 | Asset | Status |
@@ -22,9 +28,11 @@
 | Cat walk down/up/left/right | Existing |
 | Cat idle (`cat_idle.png`) | Existing |
 | Cat sleep (`cat_sleep.png`) | Existing |
-| Dog (idle + walk) | Missing |
-| Duck (idle + walk) | Missing |
-| Bunny (idle + walk) | Missing |
+| Dog (idle + walk) | Existing |
+| Duck (idle + walk) | Existing |
+| Bunny (idle + walk) | Existing |
+| Eagle (idle + walk) | Existing |
+| Penguin (idle + walk) | Existing |
 | Bird / hamster | Missing |
 
 ## Map tiles (`assets/tiles/`)
@@ -103,7 +111,7 @@
 ## NPCs
 | Asset | Status |
 |---|---|
-| Villager / NPC characters (any) | Missing (no `assets/npc/`) |
+| Villager / NPC characters (farmer/fisher/shopkeeper/villager: idle + walk + portrait) | Existing |
 | Dialogue UI art (box/nameplate/arrow) | Existing (in `assets/ui/`) |
 
 ## Shop assets
@@ -126,4 +134,4 @@
 | Shadows (`assets/shadows/`): small/medium/large | Existing |
 | Animated PNGs (`assets/animated/`): water, sea wave, grass/flower/bush sway, fountain, lantern/mushroom-lamp glow, windmill, car | Existing (usage in-engine: Unknown) |
 | Vehicles (`assets/vehicles/`): bicycle, cars, delivery van | Existing (gameplay role: Unknown) |
-| Audio / music / SFX | Missing (no `assets/audio/`) |
+| Music tracks (`assets/audio/*.mp3`) | Existing (2 tracks, day/night) |

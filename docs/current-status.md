@@ -16,7 +16,7 @@ NPCs) or needs design decisions (decoration placement, shop, tools).
 - `player/Player.tscn` + `Player.gd` — `CharacterBody2D`, 4-dir movement, walk
   animation from sprite sheets, `Camera2D` child.
 - `pets/CatPet.tscn` + `CatPet.gd` — non-physics follower with eased movement.
-- `world/World.tscn` + `World.gd` — builds the whole 40×28 map from code
+- `world/World.tscn` + `World.gd` — builds the whole 52×46 map from code
   (ground, river+bridge, paths, farm, decorations, borders, water collision),
   spawns player/cat, sets camera limits, and wires save/load (F5/F9 + on quit).
 - `world/MeowTileSet.tres` — TileSet (grass, dirt path, water + 8 directional
