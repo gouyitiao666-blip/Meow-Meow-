@@ -1,0 +1,54 @@
+{
+  "quests": {
+    "first_sprouts": {
+      "name": "First Sprouts",
+      "description": "Harvest 3 crops.",
+      "event": "harvest",
+      "target": 3,
+      "reward": {
+        "money": 20,
+        "items": {
+          "carrot_seed": 3
+        }
+      },
+      "giver": "farmer"
+    },
+    "gone_fishing": {
+      "name": "Gone Fishing",
+      "description": "Catch 5 fish.",
+      "event": "fish",
+      "target": 5,
+      "reward": {
+        "money": 30,
+        "items": {
+          "pet_food": 2
+        }
+      },
+      "giver": "fisher"
+    },
+    "rock_hound": {
+      "name": "Rock Hound",
+      "description": "Mine 3 ores.",
+      "event": "mine",
+      "target": 3,
+      "reward": {
+        "money": 40,
+        "items": {}
+      },
+      "giver": "shopkeeper"
+    },
+    "forager": {
+      "name": "Forager",
+      "description": "Forage 3 rare plants.",
+      "event": "forage",
+      "target": 3,
+      "reward": {
+        "money": 25,
+        "items": {
+          "glowing_mushroom": 1
+        }
+      },
+      "giver": "villager"
+    }
+  }
+}

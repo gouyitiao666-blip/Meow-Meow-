@@ -56,6 +56,12 @@ func get_lines(id: String) -> Array:
 	return _npcs.get(id, {}).get("lines", []).duplicate(true)
 
 
+## A single time-of-day line for an NPC ("" if none defined). Phase 7.2.
+func get_time_line(id: String, phase: String) -> String:
+	_ensure_loaded()
+	return String(_npcs.get(id, {}).get("time_lines", {}).get(phase, ""))
+
+
 func _ensure_loaded() -> void:
 	if not _loaded:
 		load_dialogue()

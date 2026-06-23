@@ -13,7 +13,8 @@
       "description": "A crunchy carrot from the farm.",
       "icon": "res://assets/farming/carrot_icon.png",
       "max_stack": 99,
-      "sell_price": 8
+      "sell_price": 8,
+      "energy": 12
     },
     "strawberry_seed": {
       "name": "Strawberry Seed",
@@ -28,7 +29,8 @@
       "description": "A sweet red strawberry.",
       "icon": "res://assets/farming/strawberry_icon.png",
       "max_stack": 99,
-      "sell_price": 14
+      "sell_price": 14,
+      "energy": 14
     },
     "tomato_seed": {
       "name": "Tomato Seed",
@@ -43,7 +45,8 @@
       "description": "A bright tomato from the garden.",
       "icon": "res://assets/farming/tomato_icon.png",
       "max_stack": 99,
-      "sell_price": 12
+      "sell_price": 12,
+      "energy": 14
     },
     "pumpkin_seed": {
       "name": "Pumpkin Seed",
@@ -58,7 +61,8 @@
       "description": "A round orange pumpkin.",
       "icon": "res://assets/farming/pumpkin_icon.png",
       "max_stack": 99,
-      "sell_price": 28
+      "sell_price": 28,
+      "energy": 25
     },
     "catnip_seed": {
       "name": "Catnip Seed",
@@ -73,7 +77,8 @@
       "description": "A cozy herb that pets enjoy.",
       "icon": "res://assets/farming/catnip_icon.png",
       "max_stack": 99,
-      "sell_price": 18
+      "sell_price": 18,
+      "energy": 8
     },
     "small_fish": {
       "name": "Small Fish",
@@ -81,7 +86,8 @@
       "description": "A small shiny fish from the river.",
       "icon": "res://assets/fishing/small_fish_icon.png",
       "max_stack": 99,
-      "sell_price": 10
+      "sell_price": 10,
+      "energy": 15
     },
     "golden_fish": {
       "name": "Golden Fish",
@@ -89,7 +95,8 @@
       "description": "A lucky golden fish.",
       "icon": "res://assets/fishing/golden_fish_icon.png",
       "max_stack": 99,
-      "sell_price": 45
+      "sell_price": 45,
+      "energy": 40
     },
     "catfish": {
       "name": "Catfish",
@@ -97,7 +104,8 @@
       "description": "A whiskered pond fish.",
       "icon": "res://assets/fishing/catfish_icon.png",
       "max_stack": 99,
-      "sell_price": 22
+      "sell_price": 22,
+      "energy": 22
     },
     "sleepy_fish": {
       "name": "Sleepy Fish",
@@ -105,7 +113,8 @@
       "description": "A calm fish that looks ready for a nap.",
       "icon": "res://assets/fishing/sleepy_fish_icon.png",
       "max_stack": 99,
-      "sell_price": 18
+      "sell_price": 18,
+      "energy": 18
     },
     "bubble_fish": {
       "name": "Bubble Fish",
@@ -113,7 +122,8 @@
       "description": "A round fish from bubbly water.",
       "icon": "res://assets/fishing/bubble_fish_icon.png",
       "max_stack": 99,
-      "sell_price": 26
+      "sell_price": 26,
+      "energy": 18
     },
     "rare_fish": {
       "name": "Rare Fish",
@@ -121,7 +131,8 @@
       "description": "A colorful fish that is hard to find.",
       "icon": "res://assets/fishing/rare_fish_icon.png",
       "max_stack": 99,
-      "sell_price": 80
+      "sell_price": 80,
+      "energy": 45
     },
     "wood": {
       "name": "Wood",
@@ -157,7 +168,8 @@
       "icon": "res://assets/items/mushroom_icon.png",
       "drop_asset": "res://assets/items/mushroom_drop.png",
       "max_stack": 99,
-      "sell_price": 7
+      "sell_price": 7,
+      "energy": 10
     },
     "flower": {
       "name": "Flower",
@@ -174,7 +186,8 @@
       "description": "A small treat for a friendly pet.",
       "icon": "res://assets/items/pet_food_icon.png",
       "drop_asset": "res://assets/items/pet_food_drop.png",
-      "max_stack": 99
+      "max_stack": 99,
+      "energy": 30
     },
     "coin": {
       "name": "Coin",
@@ -182,6 +195,49 @@
       "description": "A shiny village coin.",
       "icon": "res://assets/ui/coin_small_icon.png",
       "max_stack": 9999
+    },
+    "crab": {
+      "name": "Crab",
+      "type": "fish",
+      "description": "A little crab from the shore.",
+      "icon": "res://assets/fishing/crab_icon.png",
+      "max_stack": 99
+    },
+    "rare_blue_ore": {
+      "name": "Blue Ore",
+      "type": "resource",
+      "description": "A rare blue ore from the mountain.",
+      "icon": "res://assets/items/rare_blue_ore_icon.png",
+      "max_stack": 99
+    },
+    "rare_gold_ore": {
+      "name": "Gold Ore",
+      "type": "resource",
+      "description": "A rare gold ore from the mountain.",
+      "icon": "res://assets/items/rare_gold_ore_icon.png",
+      "max_stack": 99
+    },
+    "ore_shard": {
+      "name": "Ore Shard",
+      "type": "resource",
+      "description": "A glittering ore shard.",
+      "icon": "res://assets/items/rare_ore_shard.png",
+      "max_stack": 99
+    },
+    "glowing_mushroom": {
+      "name": "Glowing Mushroom",
+      "type": "collectible",
+      "description": "A softly glowing mushroom.",
+      "icon": "res://assets/items/glowing_mushroom_icon.png",
+      "max_stack": 99,
+      "energy": 20
+    },
+    "snowball": {
+      "name": "Snowball",
+      "type": "collectible",
+      "description": "A perfectly packed snowball.",
+      "icon": "res://assets/items/snowball_icon.png",
+      "max_stack": 99
     }
   }
 }

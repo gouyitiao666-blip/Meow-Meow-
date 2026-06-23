@@ -1,0 +1,175 @@
+{
+  "target": "asset",
+  "mode": "idle",
+  "prompt": "Human villager NPC idle loop. No animals.",
+  "role": "",
+  "input": "build/generated-assets/raw/npc_consistency/villager_idle_2x2_raw.png",
+  "threshold": 120,
+  "edge_threshold": 170,
+  "duration": 220,
+  "rows": 2,
+  "cols": 2,
+  "cell_size": 128,
+  "fit_scale": 0.78,
+  "trim_border": 10,
+  "edge_clean_depth": 8,
+  "align": "feet",
+  "shared_scale": true,
+  "component_mode": "largest",
+  "component_padding": 8,
+  "min_component_area": 20,
+  "edge_touch_margin": 0,
+  "frame_labels": [
+    "villager_idle-1",
+    "villager_idle-2",
+    "villager_idle-3",
+    "villager_idle-4"
+  ],
+  "frames": [
+    {
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 70586,
+      "selected_component_bbox": [
+        231,
+        77,
+        467,
+        529
+      ],
+      "crop_bbox": [
+        223,
+        69,
+        475,
+        537
+      ],
+      "edge_touch": false,
+      "output_size": [
+        53,
+        99
+      ],
+      "paste_position": [
+        37,
+        15
+      ]
+    },
+    {
+      "grid": [
+        0,
+        1
+      ],
+      "source_box": [
+        627,
+        0,
+        1254,
+        627
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 70159,
+      "selected_component_bbox": [
+        144,
+        81,
+        381,
+        530
+      ],
+      "crop_bbox": [
+        136,
+        73,
+        389,
+        538
+      ],
+      "edge_touch": false,
+      "output_size": [
+        53,
+        99
+      ],
+      "paste_position": [
+        37,
+        15
+      ]
+    },
+    {
+      "grid": [
+        1,
+        0
+      ],
+      "source_box": [
+        0,
+        627,
+        627,
+        1254
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 70672,
+      "selected_component_bbox": [
+        225,
+        57,
+        466,
+        506
+      ],
+      "crop_bbox": [
+        217,
+        49,
+        474,
+        514
+      ],
+      "edge_touch": false,
+      "output_size": [
+        54,
+        99
+      ],
+      "paste_position": [
+        37,
+        15
+      ]
+    },
+    {
+      "grid": [
+        1,
+        1
+      ],
+      "source_box": [
+        627,
+        627,
+        1254,
+        1254
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 70272,
+      "selected_component_bbox": [
+        140,
+        58,
+        379,
+        506
+      ],
+      "crop_bbox": [
+        132,
+        50,
+        387,
+        514
+      ],
+      "edge_touch": false,
+      "output_size": [
+        54,
+        98
+      ],
+      "paste_position": [
+        37,
+        16
+      ]
+    }
+  ],
+  "edge_touch_frames": []
+}

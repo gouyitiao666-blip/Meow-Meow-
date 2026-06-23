@@ -18,6 +18,8 @@ const SHEETS := {
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 
 var facing := "down"
+var _action_sprite: Sprite2D
+var _action_time := 0.0
 
 
 func _ready() -> void:
@@ -25,8 +27,39 @@ func _ready() -> void:
 	anim.sprite_frames = SpriteSheet.build_frames(SHEETS, FRAME, WALK_FPS)
 	anim.play("idle_down")
 
+	# A pose sprite shown during actions (fishing/farming/mining/foraging).
+	_action_sprite = Sprite2D.new()
+	_action_sprite.offset = anim.offset
+	_action_sprite.visible = false
+	add_child(_action_sprite)
 
-func _physics_process(_delta: float) -> void:
+
+## Shows an action pose for `seconds` (the player stands still meanwhile).
+## `pose_path` is a character action texture; ignored if missing.
+func play_action(pose_path: String, seconds := 0.8) -> void:
+	if pose_path == "" or not ResourceLoader.exists(pose_path):
+		return
+	_action_sprite.texture = load(pose_path)
+	_action_sprite.flip_h = facing == "left"
+	_action_sprite.visible = true
+	anim.visible = false
+	_action_time = seconds
+
+
+func is_busy() -> bool:
+	return _action_time > 0.0
+
+
+func _physics_process(delta: float) -> void:
+	# During an action pose, stand still and hold the pose.
+	if _action_time > 0.0:
+		velocity = Vector2.ZERO
+		_action_time -= delta
+		if _action_time <= 0.0:
+			_action_sprite.visible = false
+			anim.visible = true
+		return
+
 	var dir := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	velocity = dir * SPEED
 	move_and_slide()

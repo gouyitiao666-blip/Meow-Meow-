@@ -19,6 +19,7 @@ const DEFAULT_UNLOCKED_AREAS := ["home", "farm", "river"]
 
 var _inventory_source: Node = null
 var _wallet_source: Node = null
+var _weather_source: Node = null
 
 
 func get_save_path() -> String:
@@ -33,6 +34,10 @@ func set_wallet_source(source: Node) -> void:
 	_wallet_source = source
 
 
+func set_weather_source(source: Node) -> void:
+	_weather_source = source
+
+
 func get_default_save_data() -> Dictionary:
 	return {
 		"player_position": DEFAULT_PLAYER_POSITION.duplicate(true),
@@ -41,7 +46,18 @@ func get_default_save_data() -> Dictionary:
 		"money": DEFAULT_MONEY,
 		"unlocked_areas": DEFAULT_UNLOCKED_AREAS.duplicate(true),
 		"decorations": [],
-		"tool_levels": {}
+		"tool_levels": {},
+		"time": {"minutes": 480, "day": 1},
+		"weather": {"current": "sunny", "next": "cloudy", "day": 2},
+		"friendship": {},
+		"achievements": {"progress": {}, "unlocked": []},
+		"festivals": {},
+		"energy": {"energy": 100},
+		"skills": {},
+		"quests": {"progress": {}, "claimed": []},
+		"collections": {"collected": []},
+		"mail": {},
+		"npc_relationship": {}
 	}
 
 
@@ -52,6 +68,17 @@ func build_save_data(player_position: Vector2 = Vector2.ZERO) -> Dictionary:
 	data["money"] = _get_money_data()
 	data["decorations"] = _get_decoration_data()
 	data["tool_levels"] = _get_tool_level_data()
+	data["time"] = _get_time_data()
+	data["weather"] = _get_weather_data()
+	data["friendship"] = _get_node_dict("/root/PetFriendship", {})
+	data["achievements"] = _get_node_dict("/root/AchievementManager", {"progress": {}, "unlocked": []})
+	data["festivals"] = _get_node_dict("/root/FestivalManager", {})
+	data["energy"] = _get_node_dict("/root/EnergyManager", {"energy": 100})
+	data["skills"] = _get_node_dict("/root/SkillManager", {})
+	data["quests"] = _get_node_dict("/root/QuestManager", {"progress": {}, "claimed": []})
+	data["collections"] = _get_node_dict("/root/CollectionManager", {"collected": []})
+	data["mail"] = _get_node_dict("/root/MailManager", {})
+	data["npc_relationship"] = _get_node_dict("/root/NpcRelationship", {})
 	return data
 
 
@@ -81,6 +108,17 @@ func load_game(path := SAVE_PATH) -> Dictionary:
 
 	_apply_inventory(data)
 	_apply_money(data)
+	_apply_time(data)
+	_apply_weather(data)
+	_apply_node_dict("/root/PetFriendship", data.get("friendship", {}))
+	_apply_node_dict("/root/AchievementManager", data.get("achievements", {}))
+	_apply_node_dict("/root/FestivalManager", data.get("festivals", {}))
+	_apply_node_dict("/root/EnergyManager", data.get("energy", {}))
+	_apply_node_dict("/root/SkillManager", data.get("skills", {}))
+	_apply_node_dict("/root/QuestManager", data.get("quests", {}))
+	_apply_node_dict("/root/CollectionManager", data.get("collections", {}))
+	_apply_node_dict("/root/MailManager", data.get("mail", {}))
+	_apply_node_dict("/root/NpcRelationship", data.get("npc_relationship", {}))
 	load_completed.emit(path)
 	return data
 
@@ -159,6 +197,31 @@ func _normalize_save_data(data: Dictionary) -> Dictionary:
 				tool_levels[String(id)] = level
 		result["tool_levels"] = tool_levels
 
+	if typeof(data.get("time")) == TYPE_DICTIONARY:
+		var time_data: Dictionary = data["time"]
+		result["time"] = {
+			"minutes": clampf(float(time_data.get("minutes", 480)), 0.0, 1439.0),
+			"day": max(1, int(time_data.get("day", 1)))
+		}
+
+	if typeof(data.get("weather")) == TYPE_DICTIONARY:
+		var weather_data: Dictionary = data["weather"]
+		var current := String(weather_data.get("current", "sunny"))
+		var next := String(weather_data.get("next", "cloudy"))
+		if not _is_valid_weather(current):
+			current = "sunny"
+		if not _is_valid_weather(next):
+			next = "cloudy"
+		result["weather"] = {
+			"current": current,
+			"next": next,
+			"day": max(1, int(weather_data.get("day", 2)))
+		}
+
+	for key in ["friendship", "achievements", "festivals", "energy", "skills", "quests", "collections", "mail", "npc_relationship"]:
+		if typeof(data.get(key)) == TYPE_DICTIONARY:
+			result[key] = data[key].duplicate(true)
+
 	return result
 
 
@@ -199,6 +262,69 @@ func _apply_money(data: Dictionary) -> void:
 	var wallet := _get_wallet_node()
 	if wallet != null and wallet.has_method("from_value"):
 		wallet.from_value(int(data.get("money", DEFAULT_MONEY)))
+
+
+func _get_time_data() -> Dictionary:
+	var tm := _get_time_node()
+	if tm != null and tm.has_method("to_dict"):
+		return tm.to_dict()
+	return {"minutes": 480, "day": 1}
+
+
+func _apply_time(data: Dictionary) -> void:
+	var tm := _get_time_node()
+	if tm != null and tm.has_method("from_dict"):
+		tm.from_dict(data.get("time", {"minutes": 480, "day": 1}))
+
+
+## Generic helpers for autoloads that expose to_dict()/from_dict() (Phase 7.4-7.7:
+## PetFriendship, AchievementManager, FestivalManager).
+func _get_node_dict(node_path: String, fallback: Dictionary) -> Dictionary:
+	if not is_inside_tree():
+		return fallback.duplicate(true)
+	var node := get_node_or_null(node_path)
+	if node != null and node.has_method("to_dict"):
+		return node.to_dict()
+	return fallback.duplicate(true)
+
+
+func _apply_node_dict(node_path: String, data: Dictionary) -> void:
+	if not is_inside_tree():
+		return
+	var node := get_node_or_null(node_path)
+	if node != null and node.has_method("from_dict"):
+		node.from_dict(data)
+
+
+func _get_time_node() -> Node:
+	if not is_inside_tree():
+		return null
+	return get_node_or_null("/root/TimeManager")
+
+
+func _get_weather_data() -> Dictionary:
+	var wm := _get_weather_node()
+	if wm != null and wm.has_method("to_dict"):
+		return wm.to_dict()
+	return {"current": "sunny", "next": "cloudy", "day": 2}
+
+
+func _apply_weather(data: Dictionary) -> void:
+	var wm := _get_weather_node()
+	if wm != null and wm.has_method("from_dict"):
+		wm.from_dict(data.get("weather", {"current": "sunny", "next": "cloudy", "day": 2}))
+
+
+func _get_weather_node() -> Node:
+	if _weather_source != null:
+		return _weather_source
+	if not is_inside_tree():
+		return null
+	return get_node_or_null("/root/WeatherManager")
+
+
+func _is_valid_weather(id: String) -> bool:
+	return ["sunny", "cloudy", "rain", "storm", "fog"].has(id)
 
 
 func _get_decoration_data() -> Array:

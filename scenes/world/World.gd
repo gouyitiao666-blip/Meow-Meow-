@@ -12,8 +12,10 @@ extends Node2D
 ## Everything is painted from code so the layout stays easy to read and tweak.
 
 const TILE := 64
-const MAP_W := 40  ## width in tiles
-const MAP_H := 28  ## height in tiles
+const MAP_W := 52  ## width in tiles
+const MAP_H := 46  ## height in tiles
+const BIOME_Y := 39       ## top row of the spaced-out biome band
+const BIOME_PATH_Y := 38  ## southern access path, one row above the biomes
 const WALL_MARGIN := 7.0  ## small invisible-wall buffer added around each solid prop
 
 # TileSet source ids — must match scenes/world/MeowTileSet.tres
@@ -32,6 +34,14 @@ const SRC_WCTL := 11  ## water corner: top-left
 const SRC_WCTR := 12  ## water corner: top-right
 const SRC_WCBL := 13  ## water corner: bottom-left
 const SRC_WCBR := 14  ## water corner: bottom-right
+# Phase 8 biome tiles
+const SRC_SAND := 15
+const SRC_OCEAN := 16
+const SRC_MTN := 17
+const SRC_MOSS := 18
+const SRC_SNOW := 19
+const SRC_CAVE := 20
+const SRC_STONE := 21
 
 # --- River rectangle (top-right) ---
 const RIVER_X0 := 24
@@ -63,6 +73,14 @@ const TEX_FLOWER: Texture2D = preload("res://assets/nature/flower.png")
 const TEX_BUSH: Texture2D = preload("res://assets/nature/bush.png")
 const TEX_MUSHROOM: Texture2D = preload("res://assets/nature/mushroom.png")
 const TEX_LOG: Texture2D = preload("res://assets/nature/log.png")
+const TEX_MUSH_LAMP: Texture2D = preload("res://assets/buildings/mushroom_lamp.png")
+const GATHER_NODE := preload("res://scenes/world/GatherNode.gd")
+const CRAFT_STATION_TRIGGER := preload("res://scenes/world/CraftStationTrigger.gd")
+const TEX_KITCHEN: Texture2D = preload("res://assets/buildings/round_table.png")
+const UI_TRIGGER := preload("res://scenes/world/UiTrigger.gd")
+const SLEEP_TRIGGER := preload("res://scenes/world/SleepTrigger.gd")
+const TEX_MUSEUM: Texture2D = preload("res://assets/buildings/town_hall_building.png")
+const TEX_MAILBOX: Texture2D = preload("res://assets/buildings/mailbox.png")
 const FISHING_SPOT_SCENE := preload("res://scenes/fishing/FishingSpot.tscn")
 const TEX_SHOP: Texture2D = preload("res://assets/buildings/shop_building.png")
 const SHOP_UI_SCENE := preload("res://scenes/ui/ShopUI.tscn")
@@ -73,6 +91,13 @@ const DIALOGUE_UI_SCENE := preload("res://scenes/ui/DialogueUI.tscn")
 const TEX_WORKBENCH: Texture2D = preload("res://assets/buildings/storage_shed.png")
 const TOOL_UPGRADE_UI_SCENE := preload("res://scenes/ui/ToolUpgradeUI.tscn")
 const WORKBENCH_TRIGGER := preload("res://scenes/tools/WorkbenchTrigger.gd")
+const TIME_UI_SCENE := preload("res://scenes/ui/TimeUI.tscn")
+const WEATHER_TEXTURES := {
+	"cloudy": preload("res://assets/effects/weather_cloud_shadow_overlay.png"),
+	"rain": preload("res://assets/effects/weather_rain_overlay.png"),
+	"storm": preload("res://assets/effects/weather_storm_overlay.png"),
+	"fog": preload("res://assets/effects/weather_fog_overlay.png"),
+}
 
 @onready var tilemap: TileMapLayer = $TileMapLayer
 
@@ -82,6 +107,8 @@ var _water_cells: Array[Vector2i] = []  ## solid water tiles (collected while pa
 var _reserved: Dictionary = {}  ## cells nature must avoid (paths, water, structures, spawn)
 var _nature_cells: Array[Vector2i] = []  ## placed nature props, for interval spacing
 var _placed_decorations: Array = []  ## player-placed decorations (build mode), for removal
+var _weather_overlay: CanvasLayer
+var _weather_texture: TextureRect
 
 
 func _ready() -> void:
@@ -91,12 +118,28 @@ func _ready() -> void:
 	_build_pond()
 	_build_paths()
 	_build_farm()
+	_build_biomes()
 	_build_decorations()
 	_build_fishing_spot()
 	_build_shop()
 	_build_workbench()
 	_build_pets()
 	_build_npcs()
+	add_child(TIME_UI_SCENE.instantiate())  # day/night clock + tint (7.1)
+	add_child(preload("res://scenes/world/Ambience.gd").new())  # time-of-day music (7.1)
+	add_child(preload("res://scenes/ui/SeasonOverlay.tscn").instantiate())  # 7.6 visuals
+	add_child(preload("res://scenes/ui/ToastUI.tscn").instantiate())        # 7.5 achievement popups
+	add_child(preload("res://scenes/ui/FriendshipUI.tscn").instantiate())   # 7.4 hearts
+	add_child(preload("res://scenes/ui/FestivalUI.tscn").instantiate())     # 7.7 festival banner
+	add_child(preload("res://scenes/ui/CraftingUI.tscn").instantiate())     # 9.1 crafting panel
+	add_child(preload("res://scenes/ui/EnergyUI.tscn").instantiate())       # 9.3 energy bar
+	add_child(preload("res://scenes/ui/JournalUI.tscn").instantiate())      # 10/11 journal (J)
+	add_child(preload("res://scenes/ui/MuseumUI.tscn").instantiate())       # 10.4 collections
+	add_child(preload("res://scenes/ui/MailUI.tscn").instantiate())         # 10.2 mail
+	add_child(preload("res://scenes/ui/PauseUI.tscn").instantiate())        # 12.2 pause/options
+	_build_kitchen()
+	_build_community()
+	_build_weather_overlay()
 	_build_borders()
 	_build_water_collision()
 
@@ -133,10 +176,18 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_F5:
 			_save_game()
+			_toast("Saved", "Progress saved.")
 			get_viewport().set_input_as_handled()
 		elif event.keycode == KEY_F9:
 			_load_game()
+			_toast("Loaded", "Progress loaded.")
 			get_viewport().set_input_as_handled()
+
+
+func _toast(title: String, subtitle := "") -> void:
+	var toast := get_tree().get_first_node_in_group("toast_ui")
+	if toast != null:
+		toast.call("popup", title, subtitle)
 
 
 func _save_game(path := "") -> bool:
@@ -198,6 +249,46 @@ func _save_manager() -> Node:
 
 func _inventory() -> Node:
 	return get_node_or_null("/root/Inventory")
+
+
+func _weather_manager() -> Node:
+	return get_node_or_null("/root/WeatherManager")
+
+
+func _build_weather_overlay() -> void:
+	_weather_overlay = CanvasLayer.new()
+	_weather_overlay.name = "WeatherOverlay"
+	_weather_overlay.layer = 4  # below TimeUI (5), above the world
+	_weather_overlay.visible = false
+	add_child(_weather_overlay)
+
+	_weather_texture = TextureRect.new()
+	_weather_texture.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_weather_texture.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_weather_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_weather_texture.stretch_mode = TextureRect.STRETCH_SCALE
+	_weather_texture.modulate = Color(1, 1, 1, 0.36)
+	_weather_overlay.add_child(_weather_texture)
+
+	var wm := _weather_manager()
+	if wm != null:
+		wm.connect("weather_changed", Callable(self, "_on_weather_changed"))
+		_apply_weather_visual(String(wm.call("get_weather")))
+
+
+func _on_weather_changed(weather: String, _previous_weather: String) -> void:
+	_apply_weather_visual(weather)
+
+
+func _apply_weather_visual(weather: String) -> void:
+	if _weather_overlay == null or _weather_texture == null:
+		return
+	if not WEATHER_TEXTURES.has(weather):
+		_weather_overlay.visible = false
+		_weather_texture.texture = null
+		return
+	_weather_texture.texture = WEATHER_TEXTURES[weather]
+	_weather_overlay.visible = true
 
 
 # --- Tile helpers ---------------------------------------------------------
@@ -278,8 +369,8 @@ func _build_paths() -> void:
 	# Forest <-> farm spine (top-left down to the farm).
 	for y in range(4, 19):
 		_paint(6, y, SRC_PATH)
-	# Home spine (trunk down into the home yard).
-	for y in range(14, 26):
+	# Home spine (trunk down through the home yard to the southern path).
+	for y in range(14, BIOME_PATH_Y + 1):
 		_paint(20, y, SRC_PATH)
 	# Bridge approach on the left bank (trunk up to the bridge).
 	for y in range(BRIDGE_Y, 15):
@@ -287,6 +378,13 @@ func _build_paths() -> void:
 	# Short lead off the bridge into the fishing area on the right bank.
 	_paint(29, BRIDGE_Y, SRC_PATH)
 	_paint(30, BRIDGE_Y, SRC_PATH)
+	# Southern access path linking the home spine to all four spaced-out biomes,
+	# one row above the biome band.
+	for x in range(6, 50):
+		_paint(x, BIOME_PATH_Y, SRC_PATH)
+	# Left connector from the trunk down to the southern path.
+	for y in range(15, BIOME_PATH_Y):
+		_paint(6, y, SRC_PATH)
 
 
 ## Paints the farm soil plots and drops an interactable FarmTile on each, with a
@@ -348,6 +446,21 @@ func _build_decorations() -> void:
 	for t in [Vector2i(18, 24), Vector2i(24, 24)]:
 		_place_nature(TEX_FLOWER, t)
 	_place_nature(TEX_BUSH, Vector2i(15, 24))
+
+	# --- Expanded open areas (east + south): scattered cozy nature ---
+	for t in [Vector2i(42, 8), Vector2i(46, 12), Vector2i(44, 20), Vector2i(48, 24),
+			Vector2i(41, 28), Vector2i(47, 31), Vector2i(38, 31), Vector2i(30, 33),
+			Vector2i(22, 32), Vector2i(14, 32)]:
+		_place_nature(TEX_TREE_BIG, t, 1.4)
+	for t in [Vector2i(44, 5), Vector2i(49, 18), Vector2i(40, 16), Vector2i(45, 28),
+			Vector2i(26, 31), Vector2i(18, 31)]:
+		_place_nature(TEX_TREE_SMALL, t, 1.3)
+	for t in [Vector2i(43, 14), Vector2i(47, 9), Vector2i(41, 23), Vector2i(34, 32), Vector2i(10, 31)]:
+		_place_nature(TEX_BUSH, t)
+	for t in [Vector2i(45, 16), Vector2i(48, 29), Vector2i(43, 27), Vector2i(28, 30), Vector2i(16, 33)]:
+		_place_nature(TEX_FLOWER, t)
+	for t in [Vector2i(46, 21), Vector2i(40, 11)]:
+		_place_nature(TEX_ROCK, t, 1.3)
 
 
 ## Reserves every non-grass tile (paths, water, soil, bridge) plus a 1-tile
@@ -426,6 +539,137 @@ func _place_nature(tex: Texture2D, tile: Vector2i, prop_scale := 1.0) -> bool:
 	_nature_cells.append(tile)
 	_reserved[tile] = true
 	return true
+
+
+## Phase 10/11 community spots: museum (donate), mailbox, and a sleep spot.
+func _build_community() -> void:
+	_place_structure(TEX_MUSEUM, Vector2i(36, 20), 1.0, Rect2i(35, 19, 3, 2))
+	var museum_trigger := UI_TRIGGER.new()
+	museum_trigger.name = "MuseumTrigger"
+	museum_trigger.ui_group = "museum_ui"
+	museum_trigger.position = _tile_center(36, 21)
+	add_child(museum_trigger)
+
+	_place_structure(TEX_MAILBOX, Vector2i(11, 23), 1.0, Rect2i(11, 23, 1, 1))
+	var mail_trigger := UI_TRIGGER.new()
+	mail_trigger.name = "MailboxTrigger"
+	mail_trigger.ui_group = "mail_ui"
+	mail_trigger.position = _tile_center(11, 24)
+	add_child(mail_trigger)
+
+	var sleep_trigger := SLEEP_TRIGGER.new()
+	sleep_trigger.name = "SleepTrigger"
+	sleep_trigger.position = _tile_center(17, 24)
+	add_child(sleep_trigger)
+
+
+## Phase 9 kitchen/crafting station near the home.
+func _build_kitchen() -> void:
+	_place_structure(TEX_KITCHEN, Vector2i(13, 24), 1.0, Rect2i(13, 24, 1, 1))
+	var trigger := CRAFT_STATION_TRIGGER.new()
+	trigger.name = "KitchenTrigger"
+	trigger.station_id = "kitchen"
+	trigger.position = _tile_center(13, 25)
+	add_child(trigger)
+
+
+## Phase 8 biome band along the bottom of the map: beach, mushroom forest,
+## mountain, and snow — each with its own tiles, props, fishing, and pets.
+func _build_biomes() -> void:
+	_build_beach()
+	_build_mushroom_forest()
+	_build_mountain()
+	_build_snow()
+
+
+func _fill_tiles(x0: int, x1: int, y0: int, y1: int, src: int) -> void:
+	for x in range(x0, x1 + 1):
+		for y in range(y0, y1 + 1):
+			_paint(x, y, src)
+
+
+func _fill_water(x0: int, x1: int, y0: int, y1: int) -> void:
+	for x in range(x0, x1 + 1):
+		for y in range(y0, y1 + 1):
+			_paint(x, y, SRC_OCEAN)
+			_water_cells.append(Vector2i(x, y))
+
+
+func _spawn_fishing_spot(spot_id: String, tile: Vector2i) -> void:
+	var spot := FISHING_SPOT_SCENE.instantiate()
+	spot.spot_id = spot_id
+	spot.position = _tile_center(tile.x, tile.y)
+	add_child(spot)
+
+
+## Places a prop from an asset path (loads at runtime; skips if missing).
+func _spawn_path(path: String, tile: Vector2i, solid: bool, prop_scale := 1.0) -> void:
+	if ResourceLoader.exists(path):
+		_spawn_prop(load(path), tile, solid, prop_scale)
+
+
+## Places a gatherable node (ore/plant) that gives `item_id` on interact.
+func _spawn_gather(item_id: String, prop_path: String, tile: Vector2i, gather_event := "mine") -> void:
+	var node := GATHER_NODE.new()
+	node.item_id = item_id
+	node.prop_path = prop_path
+	node.gather_event = gather_event
+	node.position = _tile_center(tile.x, tile.y)
+	add_child(node)
+
+
+## 8.1 Beach — sand with an ocean strip + ocean fishing (shells/crab) + beach decor.
+## Spaced biome at the far bottom-left.
+func _build_beach() -> void:
+	_fill_tiles(2, 10, 39, 43, SRC_SAND)
+	_fill_water(2, 10, 42, 43)
+	_spawn_fishing_spot("ocean", Vector2i(6, 41))
+	_spawn_path("res://assets/nature/beach_shell_pile.png", Vector2i(3, 40), false)
+	_spawn_path("res://assets/buildings/coral_starfish_decor.png", Vector2i(9, 40), false)
+
+
+## 8.3 Mushroom Forest — moss, glowing mushrooms, a bunny village, and foraging.
+func _build_mushroom_forest() -> void:
+	_fill_tiles(15, 23, 39, 43, SRC_MOSS)
+	for t in [Vector2i(16, 40), Vector2i(22, 40)]:
+		_spawn_prop(TEX_MUSH_LAMP, t, true)
+	# Bunny village + giant/glowing mushroom decor.
+	_spawn_path("res://assets/buildings/bunny_stump_house.png", Vector2i(16, 42), true)
+	_spawn_path("res://assets/buildings/village_house_medium.png", Vector2i(22, 42), true, 0.9)
+	_spawn_path("res://assets/nature/giant_red_mushroom.png", Vector2i(19, 40), true)
+	_spawn_path("res://assets/nature/glowing_mushroom_cluster.png", Vector2i(23, 40), false)
+	# Forage a rare glowing plant.
+	_spawn_gather("glowing_mushroom", "res://assets/nature/rare_glowing_plant.png", Vector2i(18, 43), "forage")
+	_spawn_idle_pet("bunny", Vector2i(20, 43))
+	_spawn_idle_pet("bunny", Vector2i(21, 41))
+
+
+## 8.2 Mountain — rocky ground, a stone path, a cave entrance, an eagle, and
+## mineable rare-ore rocks.
+func _build_mountain() -> void:
+	_fill_tiles(28, 36, 39, 43, SRC_MTN)
+	for x in range(28, 37):
+		_paint(x, 41, SRC_STONE)
+	_fill_tiles(28, 29, 39, 40, SRC_CAVE)  # cave entrance
+	_spawn_prop(TEX_ROCK, Vector2i(31, 43), true, 1.3)
+	_spawn_path("res://assets/nature/mountain_pine_shrub.png", Vector2i(35, 40), true)
+	# Mineable ore rocks (regrow after a while).
+	_spawn_gather("rare_blue_ore", "res://assets/nature/rock.png", Vector2i(30, 40))
+	_spawn_gather("rare_gold_ore", "res://assets/nature/rock.png", Vector2i(33, 40))
+	_spawn_gather("ore_shard", "res://assets/nature/rock.png", Vector2i(36, 43))
+	_spawn_idle_pet("eagle", Vector2i(32, 42))
+
+
+## 8.4 Snow — snowfield with a frozen pond (winter fishing), a penguin, and
+## icy decor.
+func _build_snow() -> void:
+	_fill_tiles(41, 49, 39, 43, SRC_SNOW)
+	_fill_water(44, 47, 41, 43)  # frozen pond
+	_spawn_fishing_spot("frozen_pond", Vector2i(45, 40))
+	_spawn_path("res://assets/nature/frozen_pond_marker.png", Vector2i(45, 40), false)
+	for t in [Vector2i(42, 40), Vector2i(48, 42), Vector2i(43, 43)]:
+		_spawn_path("res://assets/nature/icy_crystal_cluster.png", t, true)
+	_spawn_idle_pet("penguin", Vector2i(43, 42))
 
 
 ## Interactable fishing spot by the river.

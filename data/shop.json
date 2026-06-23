@@ -5,12 +5,36 @@
       "keeper_npc_id": "shopkeeper",
       "panel_asset": "res://assets/ui/shop_panel.png",
       "items": [
-        { "item_id": "carrot_seed", "buy_price": 5, "sell_price": 1 },
-        { "item_id": "strawberry_seed", "buy_price": 12, "sell_price": 3 },
-        { "item_id": "tomato_seed", "buy_price": 10, "sell_price": 3 },
-        { "item_id": "pumpkin_seed", "buy_price": 20, "sell_price": 5 },
-        { "item_id": "catnip_seed", "buy_price": 14, "sell_price": 4 },
-        { "item_id": "pet_food", "buy_price": 18, "sell_price": 4 }
+        {
+          "item_id": "carrot_seed",
+          "buy_price": 5,
+          "sell_price": 1
+        },
+        {
+          "item_id": "strawberry_seed",
+          "buy_price": 12,
+          "sell_price": 3
+        },
+        {
+          "item_id": "tomato_seed",
+          "buy_price": 10,
+          "sell_price": 3
+        },
+        {
+          "item_id": "pumpkin_seed",
+          "buy_price": 20,
+          "sell_price": 5
+        },
+        {
+          "item_id": "catnip_seed",
+          "buy_price": 14,
+          "sell_price": 4
+        },
+        {
+          "item_id": "pet_food",
+          "buy_price": 18,
+          "sell_price": 4
+        }
       ]
     },
     "fish_market": {
@@ -18,9 +42,21 @@
       "keeper_npc_id": "fisher",
       "panel_asset": "res://assets/ui/shop_panel.png",
       "items": [
-        { "item_id": "small_fish", "buy_price": 18, "sell_price": 10 },
-        { "item_id": "catfish", "buy_price": 35, "sell_price": 22 },
-        { "item_id": "golden_fish", "buy_price": 70, "sell_price": 45 }
+        {
+          "item_id": "small_fish",
+          "buy_price": 18,
+          "sell_price": 10
+        },
+        {
+          "item_id": "catfish",
+          "buy_price": 35,
+          "sell_price": 22
+        },
+        {
+          "item_id": "golden_fish",
+          "buy_price": 70,
+          "sell_price": 45
+        }
       ]
     }
   }

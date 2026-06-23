@@ -1,0 +1,7 @@
+{
+  "sets": {
+    "Crops": ["carrot", "strawberry", "tomato", "pumpkin", "catnip"],
+    "Fish": ["small_fish", "catfish", "golden_fish", "sleepy_fish", "bubble_fish", "rare_fish", "crab"],
+    "Treasures": ["shell", "rare_blue_ore", "rare_gold_ore", "ore_shard", "glowing_mushroom"]
+  }
+}

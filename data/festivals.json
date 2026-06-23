@@ -1,0 +1,23 @@
+{
+  "schedule_day_mod": 7,
+  "festivals": {
+    "pet_festival": {
+      "name": "Pet Festival",
+      "day_match": 0,
+      "reward": { "money": 30, "items": { "pet_food": 2 } },
+      "decorations": ["flower_patch", "pet_bed"]
+    },
+    "fishing_festival": {
+      "name": "Fishing Festival",
+      "day_match": 3,
+      "reward": { "money": 30, "items": { "small_fish": 1 } },
+      "decorations": ["wooden_crate"]
+    },
+    "flower_festival": {
+      "name": "Flower Festival",
+      "day_match": 5,
+      "reward": { "money": 30, "items": { "flower": 3 } },
+      "decorations": ["flower_patch", "bush"]
+    }
+  }
+}

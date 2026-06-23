@@ -49,6 +49,68 @@
           "max_amount": 1
         }
       ]
+    },
+    "ocean": {
+      "name": "Ocean",
+      "min_wait_seconds": 2.5,
+      "max_wait_seconds": 5.0,
+      "rewards": [
+        {
+          "item_id": "shell",
+          "weight": 40,
+          "min_amount": 1,
+          "max_amount": 2
+        },
+        {
+          "item_id": "small_fish",
+          "weight": 35,
+          "min_amount": 1,
+          "max_amount": 1
+        },
+        {
+          "item_id": "catfish",
+          "weight": 18,
+          "min_amount": 1,
+          "max_amount": 1
+        },
+        {
+          "item_id": "rare_fish",
+          "weight": 7,
+          "min_amount": 1,
+          "max_amount": 1
+        },
+        {
+          "item_id": "crab",
+          "weight": 20,
+          "min_amount": 1,
+          "max_amount": 1
+        }
+      ]
+    },
+    "frozen_pond": {
+      "name": "Frozen Pond",
+      "min_wait_seconds": 3.0,
+      "max_wait_seconds": 6.0,
+      "rewards": [
+        {
+          "item_id": "sleepy_fish",
+          "weight": 50,
+          "min_amount": 1,
+          "max_amount": 1
+        },
+        {
+          "item_id": "bubble_fish",
+          "weight": 35,
+          "min_amount": 1,
+          "max_amount": 1
+        },
+        {
+          "item_id": "golden_fish",
+          "weight": 15,
+          "min_amount": 1,
+          "max_amount": 1
+        }
+      ]
     }
   }
 }

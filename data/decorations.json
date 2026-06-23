@@ -7,7 +7,10 @@
       "asset": "res://assets/buildings/fence_straight.png",
       "solid": true,
       "cost": 5,
-      "footprint": { "w": 1, "h": 1 }
+      "footprint": {
+        "w": 1,
+        "h": 1
+      }
     },
     "fence_corner": {
       "name": "Fence Corner",
@@ -16,7 +19,10 @@
       "asset": "res://assets/buildings/fence_corner.png",
       "solid": true,
       "cost": 5,
-      "footprint": { "w": 1, "h": 1 }
+      "footprint": {
+        "w": 1,
+        "h": 1
+      }
     },
     "pet_bed": {
       "name": "Pet Bed",
@@ -25,7 +31,10 @@
       "asset": "res://assets/buildings/pet_bed.png",
       "solid": true,
       "cost": 25,
-      "footprint": { "w": 2, "h": 2 }
+      "footprint": {
+        "w": 2,
+        "h": 2
+      }
     },
     "wooden_crate": {
       "name": "Wooden Crate",
@@ -34,7 +43,10 @@
       "asset": "res://assets/buildings/wooden_crate.png",
       "solid": true,
       "cost": 15,
-      "footprint": { "w": 1, "h": 1 }
+      "footprint": {
+        "w": 1,
+        "h": 1
+      }
     },
     "flower_pot": {
       "name": "Flower Pot",
@@ -43,7 +55,10 @@
       "asset": "res://assets/buildings/flower_pot.png",
       "solid": true,
       "cost": 12,
-      "footprint": { "w": 1, "h": 1 }
+      "footprint": {
+        "w": 1,
+        "h": 1
+      }
     },
     "bush": {
       "name": "Bush",
@@ -52,7 +67,10 @@
       "asset": "res://assets/nature/bush.png",
       "solid": true,
       "cost": 10,
-      "footprint": { "w": 1, "h": 1 }
+      "footprint": {
+        "w": 1,
+        "h": 1
+      }
     },
     "bench": {
       "name": "Bench",
@@ -61,7 +79,10 @@
       "asset": "res://assets/buildings/bench.png",
       "solid": true,
       "cost": 35,
-      "footprint": { "w": 2, "h": 1 }
+      "footprint": {
+        "w": 2,
+        "h": 1
+      }
     },
     "lantern": {
       "name": "Lantern",
@@ -71,7 +92,10 @@
       "animated_asset": "res://assets/animated/lantern_glow_animated.png",
       "solid": true,
       "cost": 30,
-      "footprint": { "w": 1, "h": 1 }
+      "footprint": {
+        "w": 1,
+        "h": 1
+      }
     },
     "mushroom_lamp": {
       "name": "Mushroom Lamp",
@@ -81,7 +105,10 @@
       "animated_asset": "res://assets/animated/mushroom_lamp_glow_animated.png",
       "solid": true,
       "cost": 40,
-      "footprint": { "w": 1, "h": 1 }
+      "footprint": {
+        "w": 1,
+        "h": 1
+      }
     },
     "garden_arch": {
       "name": "Garden Arch",
@@ -90,7 +117,10 @@
       "asset": "res://assets/buildings/garden_arch.png",
       "solid": true,
       "cost": 80,
-      "footprint": { "w": 2, "h": 1 }
+      "footprint": {
+        "w": 2,
+        "h": 1
+      }
     },
     "small_well": {
       "name": "Small Well",
@@ -99,7 +129,10 @@
       "asset": "res://assets/buildings/small_well.png",
       "solid": true,
       "cost": 75,
-      "footprint": { "w": 2, "h": 2 }
+      "footprint": {
+        "w": 2,
+        "h": 2
+      }
     },
     "street_lamp": {
       "name": "Street Lamp",
@@ -108,7 +141,10 @@
       "asset": "res://assets/buildings/street_lamp.png",
       "solid": true,
       "cost": 55,
-      "footprint": { "w": 1, "h": 1 }
+      "footprint": {
+        "w": 1,
+        "h": 1
+      }
     },
     "fountain": {
       "name": "Fountain",
@@ -118,7 +154,85 @@
       "animated_asset": "res://assets/animated/fountain_water_animated.png",
       "solid": true,
       "cost": 120,
-      "footprint": { "w": 2, "h": 2 }
+      "footprint": {
+        "w": 2,
+        "h": 2
+      }
+    },
+    "festival_banner": {
+      "name": "Festival Banner",
+      "category": "festival",
+      "description": "A cheerful banner \u2014 only during the Pet Festival.",
+      "asset": "res://assets/buildings/signboard.png",
+      "solid": true,
+      "cost": 0,
+      "footprint": {
+        "w": 1,
+        "h": 1
+      },
+      "festival": "pet_festival"
+    },
+    "fishing_flag": {
+      "name": "Fishing Flag",
+      "category": "festival",
+      "description": "A breezy flag for the Fishing Festival.",
+      "asset": "res://assets/buildings/signboard.png",
+      "solid": true,
+      "cost": 0,
+      "footprint": {
+        "w": 1,
+        "h": 1
+      },
+      "festival": "fishing_festival"
+    },
+    "flower_stand": {
+      "name": "Flower Stand",
+      "category": "festival",
+      "description": "A pretty stand for the Flower Festival.",
+      "asset": "res://assets/buildings/flower_pot.png",
+      "solid": true,
+      "cost": 0,
+      "footprint": {
+        "w": 1,
+        "h": 1
+      },
+      "festival": "flower_festival"
+    },
+    "round_table": {
+      "name": "Round Table",
+      "category": "furniture",
+      "description": "A cozy round table.",
+      "asset": "res://assets/buildings/round_table.png",
+      "solid": true,
+      "cost": 20,
+      "footprint": {
+        "w": 1,
+        "h": 1
+      }
+    },
+    "outdoor_chair": {
+      "name": "Chair",
+      "category": "furniture",
+      "description": "A comfy chair.",
+      "asset": "res://assets/buildings/outdoor_chair.png",
+      "solid": true,
+      "cost": 12,
+      "footprint": {
+        "w": 1,
+        "h": 1
+      }
+    },
+    "outdoor_sofa": {
+      "name": "Sofa",
+      "category": "furniture",
+      "description": "A soft outdoor sofa.",
+      "asset": "res://assets/buildings/sofa_outdoor.png",
+      "solid": true,
+      "cost": 35,
+      "footprint": {
+        "w": 2,
+        "h": 1
+      }
     }
   }
 }

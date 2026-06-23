@@ -71,6 +71,42 @@
         "left": "res://assets/pets/bunny_walk_left.png",
         "right": "res://assets/pets/bunny_walk_right.png"
       }
+    },
+    "eagle": {
+      "name": "Eagle",
+      "species": "eagle",
+      "description": "A eagle friend (Phase 8).",
+      "unlocked_by_default": false,
+      "follow_distance": 56,
+      "move_speed": 130,
+      "idle_asset": "res://assets/pets/eagle_idle.png",
+      "sleep_asset": "",
+      "happy_emote_asset": "res://assets/ui/pet_emote_happy.png",
+      "favorite_item_id": "rare_fish",
+      "walk_assets": {
+        "down": "res://assets/pets/eagle_walk_down.png",
+        "up": "res://assets/pets/eagle_walk_up.png",
+        "left": "res://assets/pets/eagle_walk_left.png",
+        "right": "res://assets/pets/eagle_walk_right.png"
+      }
+    },
+    "penguin": {
+      "name": "Penguin",
+      "species": "penguin",
+      "description": "A penguin friend (Phase 8).",
+      "unlocked_by_default": false,
+      "follow_distance": 44,
+      "move_speed": 90,
+      "idle_asset": "res://assets/pets/penguin_idle.png",
+      "sleep_asset": "",
+      "happy_emote_asset": "res://assets/ui/pet_emote_happy.png",
+      "favorite_item_id": "small_fish",
+      "walk_assets": {
+        "down": "res://assets/pets/penguin_walk_down.png",
+        "up": "res://assets/pets/penguin_walk_up.png",
+        "left": "res://assets/pets/penguin_walk_left.png",
+        "right": "res://assets/pets/penguin_walk_right.png"
+      }
     }
   }
 }

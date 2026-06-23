@@ -9,7 +9,13 @@
       "lines": [
         "Watered crops grow with a little extra courage.",
         "Strawberries are gentle, but pumpkins like to take their time."
-      ]
+      ],
+      "time_lines": {
+        "morning": "Morning is the best time to water.",
+        "afternoon": "The afternoon sun is kind to the crops.",
+        "evening": "I'm about to head in for the evening.",
+        "night": "So sleepy... the fields can wait till dawn."
+      }
     },
     "fisher": {
       "name": "Finn",
@@ -20,7 +26,13 @@
       "lines": [
         "Some fish bite quickly, and some make you wait.",
         "Try a pond when you want something unusual."
-      ]
+      ],
+      "time_lines": {
+        "morning": "Fish bite best in the early light.",
+        "afternoon": "Midday catches are slow but steady.",
+        "evening": "Evening ripples mean one last cast.",
+        "night": "Even the river is asleep now."
+      }
     },
     "shopkeeper": {
       "name": "Poppy",
@@ -31,7 +43,13 @@
       "lines": [
         "A full bag of seeds is the start of a good morning.",
         "Bring crops back any time if you want to sell them."
-      ]
+      ],
+      "time_lines": {
+        "morning": "Fresh stock, just opened!",
+        "afternoon": "Busy afternoon \u2014 take your time.",
+        "evening": "Closing soon, grab what you need.",
+        "night": "We're shut for the night, sorry!"
+      }
     },
     "villager": {
       "name": "Nori",
@@ -42,7 +60,13 @@
       "lines": [
         "The village feels warmer when the lamps turn on.",
         "A bench near flowers is my favorite place to rest."
-      ]
+      ],
+      "time_lines": {
+        "morning": "Good morning! The lamps just went off.",
+        "afternoon": "Lovely day for a stroll.",
+        "evening": "The lanterns look so cozy at dusk.",
+        "night": "I should be in bed, hehe."
+      }
     }
   }
 }

@@ -1,0 +1,1 @@
+Human villager NPC walk-down loop. No animals.

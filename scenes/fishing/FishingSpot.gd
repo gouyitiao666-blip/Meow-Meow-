@@ -42,6 +42,7 @@ func _start_fishing() -> void:
 	_is_fishing = true
 	catch_timer.wait_time = wait_seconds
 	catch_timer.start()
+	_play_player_action("res://assets/characters/player_fishing_pose.png", wait_seconds)
 	fishing_started.emit(wait_seconds)
 
 
@@ -57,9 +58,22 @@ func _on_catch_timer_timeout() -> void:
 	var amount := int(reward.get("amount", 0))
 	if not item_id.is_empty() and amount > 0:
 		inventory.call("add_item", item_id, amount)
+		var events := get_node_or_null("/root/GameEvents")
+		if events != null:
+			events.call("report", "fish", 1)
+		_play_player_action("res://assets/characters/player_pickup_item.png", 0.6)
+		var fx := get_node_or_null("/root/Effects")
+		if fx != null:
+			fx.call("play", global_position, "res://assets/effects/water_splash_effect.png")
 		fish_caught.emit(item_id, amount)
 
 	_is_fishing = false
+
+
+func _play_player_action(pose_path: String, seconds: float) -> void:
+	var player := get_tree().get_first_node_in_group("player")
+	if player != null and player.has_method("play_action"):
+		player.call("play_action", pose_path, seconds)
 
 
 func _fish_database() -> Node:

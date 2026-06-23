@@ -1,0 +1,155 @@
+{
+  "target": "asset",
+  "mode": "fx",
+  "prompt": "Phase 7/8 achievement_sparkle_loop clean HD 2D FX animation sheet, generated with solid #FF00FF background.",
+  "role": "",
+  "input": "build/generated-assets/raw/phase7_8_animations/achievement_sparkle_loop_2x2_raw.png",
+  "threshold": 120,
+  "edge_threshold": 170,
+  "duration": 180,
+  "rows": 2,
+  "cols": 2,
+  "cell_size": 256,
+  "fit_scale": 0.92,
+  "trim_border": 8,
+  "edge_clean_depth": 8,
+  "align": "center",
+  "shared_scale": true,
+  "component_mode": "all",
+  "component_padding": 8,
+  "min_component_area": 6,
+  "edge_touch_margin": 0,
+  "frame_labels": [
+    "achievement_sparkle_loop-1",
+    "achievement_sparkle_loop-2",
+    "achievement_sparkle_loop-3",
+    "achievement_sparkle_loop-4"
+  ],
+  "frames": [
+    {
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "component_mode": "all",
+      "component_count": 16,
+      "selected_component_area": null,
+      "selected_component_bbox": null,
+      "crop_bbox": [
+        247,
+        237,
+        370,
+        370
+      ],
+      "edge_touch": false,
+      "output_size": [
+        84,
+        91
+      ],
+      "paste_position": [
+        86,
+        82
+      ]
+    },
+    {
+      "grid": [
+        0,
+        1
+      ],
+      "source_box": [
+        627,
+        0,
+        1254,
+        627
+      ],
+      "component_mode": "all",
+      "component_count": 57,
+      "selected_component_area": null,
+      "selected_component_bbox": null,
+      "crop_bbox": [
+        121,
+        136,
+        441,
+        471
+      ],
+      "edge_touch": false,
+      "output_size": [
+        219,
+        229
+      ],
+      "paste_position": [
+        18,
+        13
+      ]
+    },
+    {
+      "grid": [
+        1,
+        0
+      ],
+      "source_box": [
+        0,
+        627,
+        627,
+        1254
+      ],
+      "component_mode": "all",
+      "component_count": 51,
+      "selected_component_area": null,
+      "selected_component_bbox": null,
+      "crop_bbox": [
+        130,
+        86,
+        466,
+        430
+      ],
+      "edge_touch": false,
+      "output_size": [
+        230,
+        235
+      ],
+      "paste_position": [
+        13,
+        10
+      ]
+    },
+    {
+      "grid": [
+        1,
+        1
+      ],
+      "source_box": [
+        627,
+        627,
+        1254,
+        1254
+      ],
+      "component_mode": "all",
+      "component_count": 34,
+      "selected_component_area": null,
+      "selected_component_bbox": null,
+      "crop_bbox": [
+        155,
+        138,
+        407,
+        404
+      ],
+      "edge_touch": false,
+      "output_size": [
+        172,
+        182
+      ],
+      "paste_position": [
+        42,
+        37
+      ]
+    }
+  ],
+  "edge_touch_frames": []
+}

@@ -1,0 +1,25 @@
+{
+  "achievements": {
+    "first_harvest": {
+      "name": "First Harvest",
+      "description": "Harvest your first crop.",
+      "event": "harvest",
+      "mode": "count",
+      "threshold": 1
+    },
+    "best_fisher": {
+      "name": "Best Fisher",
+      "description": "Catch 10 fish.",
+      "event": "fish",
+      "mode": "count",
+      "threshold": 10
+    },
+    "animal_lover": {
+      "name": "Animal Lover",
+      "description": "Reach friendship level 3 with a pet.",
+      "event": "friendship_level",
+      "mode": "max",
+      "threshold": 3
+    }
+  }
+}

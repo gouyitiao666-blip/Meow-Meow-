@@ -31,9 +31,7 @@ var _label: Label
 func _ready() -> void:
 	_world = get_parent()
 	_db = get_node_or_null("/root/DecorationDatabase")
-	if _db != null:
-		_ids = _db.call("get_all_decorations").keys()
-		_ids.sort()
+	_refresh_catalog()
 
 	_highlight = Sprite2D.new()
 	_highlight.z_index = 100
@@ -83,6 +81,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _set_active(on: bool) -> void:
+	if on:
+		_refresh_catalog()  # festival-limited decorations appear only during their festival
 	_active = on and not _ids.is_empty()
 	_ghost.visible = _active
 	_highlight.visible = _active
@@ -90,6 +90,26 @@ func _set_active(on: bool) -> void:
 	if _active:
 		_update_label()
 		_update_preview()
+
+
+## Builds the placeable list: always-available decorations plus the currently
+## active festival's limited ones (Phase 7.7).
+func _refresh_catalog() -> void:
+	if _db == null:
+		return
+	var active_festival := ""
+	var fm := get_node_or_null("/root/FestivalManager")
+	if fm != null:
+		active_festival = String(fm.call("get_active_festival"))
+
+	_ids.clear()
+	var all: Dictionary = _db.call("get_all_decorations")
+	for id in all:
+		var festival := String(all[id].get("festival", ""))
+		if festival == "" or festival == active_festival:
+			_ids.append(String(id))
+	_ids.sort()
+	_index = clampi(_index, 0, max(0, _ids.size() - 1))
 
 
 func _cycle(dir: int) -> void:

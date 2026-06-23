@@ -1,0 +1,32 @@
+{
+  "recipes": {
+    "pet_food": {
+      "name": "Pet Food",
+      "station": "kitchen",
+      "inputs": { "carrot": 1, "small_fish": 1 },
+      "output": "pet_food",
+      "amount": 2
+    },
+    "veggie_snack": {
+      "name": "Veggie Snack",
+      "station": "kitchen",
+      "inputs": { "carrot": 2, "tomato": 1 },
+      "output": "pet_food",
+      "amount": 1
+    },
+    "fish_feast": {
+      "name": "Fish Feast",
+      "station": "kitchen",
+      "inputs": { "catfish": 1 },
+      "output": "pet_food",
+      "amount": 3
+    },
+    "ore_shard": {
+      "name": "Ore Shard",
+      "station": "kitchen",
+      "inputs": { "stone": 3 },
+      "output": "ore_shard",
+      "amount": 1
+    }
+  }
+}

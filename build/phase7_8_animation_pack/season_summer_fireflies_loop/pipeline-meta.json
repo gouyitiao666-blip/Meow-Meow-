@@ -1,0 +1,155 @@
+{
+  "target": "asset",
+  "mode": "fx",
+  "prompt": "Phase 7/8 season_summer_fireflies_loop clean HD 2D FX animation sheet, generated with solid #FF00FF background.",
+  "role": "",
+  "input": "build/generated-assets/raw/phase7_8_animations/season_summer_fireflies_loop_2x2_raw.png",
+  "threshold": 120,
+  "edge_threshold": 170,
+  "duration": 180,
+  "rows": 2,
+  "cols": 2,
+  "cell_size": 256,
+  "fit_scale": 0.92,
+  "trim_border": 8,
+  "edge_clean_depth": 8,
+  "align": "center",
+  "shared_scale": true,
+  "component_mode": "all",
+  "component_padding": 8,
+  "min_component_area": 6,
+  "edge_touch_margin": 0,
+  "frame_labels": [
+    "season_summer_fireflies_loop-1",
+    "season_summer_fireflies_loop-2",
+    "season_summer_fireflies_loop-3",
+    "season_summer_fireflies_loop-4"
+  ],
+  "frames": [
+    {
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "component_mode": "all",
+      "component_count": 19,
+      "selected_component_area": null,
+      "selected_component_bbox": null,
+      "crop_bbox": [
+        101,
+        115,
+        495,
+        491
+      ],
+      "edge_touch": false,
+      "output_size": [
+        231,
+        221
+      ],
+      "paste_position": [
+        12,
+        17
+      ]
+    },
+    {
+      "grid": [
+        0,
+        1
+      ],
+      "source_box": [
+        627,
+        0,
+        1254,
+        627
+      ],
+      "component_mode": "all",
+      "component_count": 19,
+      "selected_component_area": null,
+      "selected_component_bbox": null,
+      "crop_bbox": [
+        96,
+        115,
+        492,
+        492
+      ],
+      "edge_touch": false,
+      "output_size": [
+        233,
+        221
+      ],
+      "paste_position": [
+        11,
+        17
+      ]
+    },
+    {
+      "grid": [
+        1,
+        0
+      ],
+      "source_box": [
+        0,
+        627,
+        627,
+        1254
+      ],
+      "component_mode": "all",
+      "component_count": 20,
+      "selected_component_area": null,
+      "selected_component_bbox": null,
+      "crop_bbox": [
+        97,
+        106,
+        497,
+        485
+      ],
+      "edge_touch": false,
+      "output_size": [
+        235,
+        223
+      ],
+      "paste_position": [
+        10,
+        16
+      ]
+    },
+    {
+      "grid": [
+        1,
+        1
+      ],
+      "source_box": [
+        627,
+        627,
+        1254,
+        1254
+      ],
+      "component_mode": "all",
+      "component_count": 20,
+      "selected_component_area": null,
+      "selected_component_bbox": null,
+      "crop_bbox": [
+        101,
+        106,
+        497,
+        486
+      ],
+      "edge_touch": false,
+      "output_size": [
+        233,
+        223
+      ],
+      "paste_position": [
+        11,
+        16
+      ]
+    }
+  ],
+  "edge_touch_frames": []
+}

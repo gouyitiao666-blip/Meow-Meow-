@@ -1,0 +1,28 @@
+{
+  "pack": "npc_consistency_human_pack",
+  "asset_count": 12,
+  "roles": [
+    "farmer",
+    "fisher",
+    "shopkeeper",
+    "villager"
+  ],
+  "assets": [
+    "assets/npc/farmer_portrait.png",
+    "assets/npc/npc_farmer_idle.png",
+    "assets/npc/npc_farmer_walk_down.png",
+    "assets/npc/fisher_portrait.png",
+    "assets/npc/npc_fisher_idle.png",
+    "assets/npc/npc_fisher_walk_down.png",
+    "assets/npc/shopkeeper_portrait.png",
+    "assets/npc/npc_shopkeeper_idle.png",
+    "assets/npc/npc_shopkeeper_walk_down.png",
+    "assets/npc/villager_portrait.png",
+    "assets/npc/npc_villager_idle.png",
+    "assets/npc/npc_villager_walk_down.png"
+  ],
+  "raw_dir": "build/generated-assets/raw/npc_consistency",
+  "processed_dir": "build/npc_consistency_pack",
+  "contact_sheet": "build/npc_consistency_pack_contact_sheet.png",
+  "notes": "All NPCs regenerated as human-only portraits plus idle and walk-down loops. Original generated raws remain in ~/.codex/generated_images."
+}

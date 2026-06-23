@@ -6,6 +6,8 @@ extends Node
 ## farm plots, fishing spot, and that the player spawn isn't stuck in a wall.
 
 func _ready() -> void:
+	# Start from a clean slate so a stale save position can't land in new collision.
+	DirAccess.remove_absolute("user://save_v1.json")
 	var world: Node = load("res://scenes/world/World.tscn").instantiate()
 	add_child(world)
 	await get_tree().process_frame
@@ -15,7 +17,7 @@ func _ready() -> void:
 
 	# River (5x12 - 5 bridge = 55) + pond (4x4 = 16) = 71 collision tiles.
 	var water: Node = world.get_node("WaterBody")
-	ok = _check("water collision tiles", water.get_child_count(), 71) and ok
+	ok = _check("water collision tiles", water.get_child_count(), 101) and ok  # river 55 + pond 16 + ocean 18 + frozen 12
 
 	# Farm plot is 4 x 3 = 12 interactable FarmTiles.
 	var farm_tiles := 0
@@ -26,7 +28,7 @@ func _ready() -> void:
 
 	# Two fishing spots now: river + pond (6.5).
 	var fishing_spots := get_tree().get_nodes_in_group("fishing_spot")
-	ok = _check("fishing spots", fishing_spots.size(), 2) and ok
+	ok = _check("fishing spots", fishing_spots.size(), 4) and ok  # river, pond, ocean, frozen_pond
 	var river_spot: Node = null
 	for s in fishing_spots:
 		if String(s.get("spot_id")) == "river":
@@ -57,6 +59,21 @@ func _ready() -> void:
 	else:
 		print("PASS: player spawn is clear at ", player.position)
 
+	# Gameplay smoothness: the player isn't boxed in — it can walk up the home
+	# spine and down the new biome-access path without hitting a wall.
+	var home := player.position
+	player.move_and_collide(Vector2(0, -128))  # up toward the trunk
+	var up_moved := home.y - player.position.y
+	player.position = home
+	player.move_and_collide(Vector2(0, 192))   # down toward the biomes
+	var down_moved := player.position.y - home.y
+	player.position = home
+	if up_moved > 100.0 and down_moved > 150.0:
+		print("PASS: player path clear up (%.0f) and down (%.0f)" % [up_moved, down_moved])
+	else:
+		push_error("FAIL: player path blocked (up %.0f, down %.0f)" % [up_moved, down_moved])
+		ok = false
+
 	# Save/load wiring: World -> SaveManager -> Inventory + player position.
 	var inventory = get_node_or_null("/root/Inventory")
 	var save_manager = get_node_or_null("/root/SaveManager")
@@ -82,8 +99,8 @@ func _ready() -> void:
 	# player ends up clamped off-screen (the "player/cat disappear" bug).
 	var cam: Camera2D = player.get_node("Camera2D")
 	var in_bounds := player.position.x <= cam.limit_right and player.position.y <= cam.limit_bottom
-	ok = _check("camera limit_right", cam.limit_right, 40 * 64) and ok
-	ok = _check("camera limit_bottom", cam.limit_bottom, 28 * 64) and ok
+	ok = _check("camera limit_right", cam.limit_right, 52 * 64) and ok
+	ok = _check("camera limit_bottom", cam.limit_bottom, 46 * 64) and ok
 	if in_bounds:
 		print("PASS: spawn is within camera limits")
 	else:
@@ -163,7 +180,72 @@ func _ready() -> void:
 	for c in world.get_children():
 		if c.scene_file_path.ends_with("CatPet.tscn"):
 			pets += 1
-	ok = _check("pet instances", pets, 4) and ok
+	ok = _check("pet instances", pets, 8) and ok  # cat,dog,duck,bunny + eagle,penguin,bunny x2
+
+	# Phase 8 gatherables: 3 ore rocks + 1 rare plant.
+	ok = _check("gather nodes", get_tree().get_nodes_in_group("gather").size(), 4) and ok
+
+	# Phase 9: crafting UI + energy UI + kitchen station.
+	ok = _check("crafting UI present", (1 if get_tree().get_first_node_in_group("crafting_ui") != null else 0), 1) and ok
+	var energy_ui := 0
+	var kitchen := 0
+	for c in world.get_children():
+		if c.scene_file_path.ends_with("EnergyUI.tscn"):
+			energy_ui += 1
+		if c is CraftStationTrigger:
+			kitchen += 1
+	ok = _check("energy UI present", energy_ui, 1) and ok
+	ok = _check("kitchen station present", kitchen, 1) and ok
+	var crafting_ui := get_tree().get_first_node_in_group("crafting_ui")
+	if crafting_ui != null and inventory != null:
+		inventory.call("from_dict", {"stone": 3})
+		crafting_ui.call("open", "kitchen")
+		var crafted: bool = crafting_ui.call("craft", "ore_shard")
+		ok = _check("craft ore_shard via UI", int(inventory.call("get_count", "ore_shard")), 1) and (crafted and ok)
+		crafting_ui.call("close")
+		inventory.call("clear")
+
+	# Phase 10/11 UIs + community spots present.
+	ok = _check("journal UI present", (1 if get_tree().get_first_node_in_group("journal_ui") != null else 0), 1) and ok
+	ok = _check("museum UI present", (1 if get_tree().get_first_node_in_group("museum_ui") != null else 0), 1) and ok
+	ok = _check("mail UI present", (1 if get_tree().get_first_node_in_group("mail_ui") != null else 0), 1) and ok
+	var ui_triggers := 0
+	var sleep_triggers := 0
+	for c in world.get_children():
+		if c is UiTrigger:
+			ui_triggers += 1
+		if c is SleepTrigger:
+			sleep_triggers += 1
+	ok = _check("ui triggers (museum+mail)", ui_triggers, 2) and ok
+	ok = _check("sleep trigger", sleep_triggers, 1) and ok
+
+	# Phase 12 pause menu + player action poses.
+	ok = _check("pause UI present", (1 if get_tree().get_first_node_in_group("pause_ui") != null else 0), 1) and ok
+	if player.has_method("play_action"):
+		print("PASS: player has action poses")
+	else:
+		push_error("FAIL: player missing play_action")
+		ok = false
+
+	# NPC quest turn-in (10.1): completing a giver's quest claims it on talk.
+	var qm := get_node_or_null("/root/QuestManager")
+	var farmer: Node = null
+	for c in world.get_children():
+		if c is NPC and String(c.npc_id) == "farmer":
+			farmer = c
+	if qm != null and farmer != null:
+		qm.call("from_dict", {"progress": {}, "claimed": []})
+		for i in range(3):
+			qm.call("record_event", "harvest", 1)
+		farmer.call("_turn_in_quests")
+		if bool(qm.call("is_claimed", "first_sprouts")):
+			print("PASS: NPC quest turn-in claims completed quest")
+		else:
+			push_error("FAIL: NPC quest turn-in did not claim")
+			ok = false
+	else:
+		push_error("FAIL: QuestManager/farmer NPC missing")
+		ok = false
 
 	# Per-plot crops (6.5): the 12 plots cover all 5 crop types.
 	var crop_ids := {}
@@ -212,6 +294,79 @@ func _ready() -> void:
 		inventory.call("clear")
 	else:
 		push_error("FAIL: tool upgrade UI / Wallet not available")
+		ok = false
+
+	# Day/night cycle (7.1): phase logic + time saved/restored.
+	var tm = get_node_or_null("/root/TimeManager")
+	if tm != null:
+		tm.call("from_dict", {"minutes": 13 * 60, "day": 1})
+		if String(tm.call("get_phase")) == "afternoon":
+			print("PASS: time phase at 13:00 is afternoon")
+		else:
+			push_error("FAIL: wrong phase at 13:00 -> %s" % String(tm.call("get_phase")))
+			ok = false
+		tm.call("from_dict", {"minutes": 900, "day": 3})
+		world.call("_save_game", "user://world_test_save_v1.json")
+		tm.call("from_dict", {"minutes": 0, "day": 1})
+		world.call("_load_game", "user://world_test_save_v1.json")
+		ok = _check("loaded time day", int(tm.call("get_day")), 3) and ok
+		ok = _check("loaded time minutes", int(tm.call("get_minutes")), 900) and ok
+	else:
+		push_error("FAIL: TimeManager autoload missing")
+		ok = false
+
+	# Weather system (7.3): autoload state + minimal world overlay hookup.
+	var weather = get_node_or_null("/root/WeatherManager")
+	if weather != null:
+		ok = _check("set rainy weather", int(weather.call("set_weather", "rain")), 1) and ok
+		await get_tree().process_frame
+		var overlay := world.get_node_or_null("WeatherOverlay")
+		if overlay != null:
+			print("PASS: weather overlay present")
+			ok = _check("rain overlay visible", int(overlay.visible), 1) and ok
+		else:
+			push_error("FAIL: weather overlay missing")
+			ok = false
+		world.call("_save_game", "user://world_weather_save_v1.json")
+		weather.call("set_weather", "sunny")
+		world.call("_load_game", "user://world_weather_save_v1.json")
+		ok = _check("loaded weather is rain", int(String(weather.call("get_weather")) == "rain"), 1) and ok
+	else:
+		push_error("FAIL: WeatherManager autoload missing")
+		ok = false
+
+	# Living-world frontend UIs (7.4-7.7) are present in the world.
+	var toast_ui := get_tree().get_first_node_in_group("toast_ui")
+	if toast_ui != null:
+		toast_ui.call("popup", "Test", "hi")  # should not error
+		print("PASS: toast UI present")
+	else:
+		push_error("FAIL: toast UI missing")
+		ok = false
+	ok = _check("festival UI present", (1 if get_tree().get_first_node_in_group("festival_ui") != null else 0), 1) and ok
+	var friendship_ui := 0
+	for c in world.get_children():
+		if c.scene_file_path.ends_with("FriendshipUI.tscn"):
+			friendship_ui += 1
+	ok = _check("friendship UI present", friendship_ui, 1) and ok
+
+	# Festival-limited decorations gated by the active festival (7.7).
+	var placer := world.get_node_or_null("DecorationPlacer")
+	var tm2 = get_node_or_null("/root/TimeManager")
+	if placer != null and tm2 != null:
+		tm2.call("from_dict", {"minutes": 480, "day": 1})   # no festival on day 1
+		placer.call("_refresh_catalog")
+		var hidden: bool = not placer._ids.has("festival_banner")
+		tm2.call("from_dict", {"minutes": 480, "day": 7})    # pet_festival on day 7
+		placer.call("_refresh_catalog")
+		var shown: bool = placer._ids.has("festival_banner")
+		if hidden and shown:
+			print("PASS: festival decoration gated by active festival")
+		else:
+			push_error("FAIL: festival decoration gating (hidden=%s shown=%s)" % [hidden, shown])
+			ok = false
+	else:
+		push_error("FAIL: DecorationPlacer/TimeManager missing for festival gating")
 		ok = false
 
 	print("=== WORLD TEST ", ("PASSED" if ok else "FAILED"), " ===")

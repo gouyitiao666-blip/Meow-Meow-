@@ -1,0 +1,1 @@
+Human NPC portrait sheet: farmer, fisher, shopkeeper, villager. No animals.

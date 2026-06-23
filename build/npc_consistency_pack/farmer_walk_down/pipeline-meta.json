@@ -1,0 +1,175 @@
+{
+  "target": "npc",
+  "mode": "npc_walk",
+  "prompt": "Human farmer NPC walk-down loop. No animals.",
+  "role": "",
+  "input": "build/generated-assets/raw/npc_consistency/farmer_walk_down_2x2_raw.png",
+  "threshold": 120,
+  "edge_threshold": 170,
+  "duration": 180,
+  "rows": 2,
+  "cols": 2,
+  "cell_size": 128,
+  "fit_scale": 0.78,
+  "trim_border": 10,
+  "edge_clean_depth": 8,
+  "align": "feet",
+  "shared_scale": true,
+  "component_mode": "largest",
+  "component_padding": 8,
+  "min_component_area": 20,
+  "edge_touch_margin": 0,
+  "frame_labels": [
+    "farmer_walk_down-1",
+    "farmer_walk_down-2",
+    "farmer_walk_down-3",
+    "farmer_walk_down-4"
+  ],
+  "frames": [
+    {
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 62788,
+      "selected_component_bbox": [
+        268,
+        104,
+        494,
+        521
+      ],
+      "crop_bbox": [
+        260,
+        96,
+        502,
+        529
+      ],
+      "edge_touch": false,
+      "output_size": [
+        52,
+        94
+      ],
+      "paste_position": [
+        38,
+        20
+      ]
+    },
+    {
+      "grid": [
+        0,
+        1
+      ],
+      "source_box": [
+        627,
+        0,
+        1254,
+        627
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 62797,
+      "selected_component_bbox": [
+        97,
+        105,
+        323,
+        544
+      ],
+      "crop_bbox": [
+        89,
+        97,
+        331,
+        552
+      ],
+      "edge_touch": false,
+      "output_size": [
+        52,
+        98
+      ],
+      "paste_position": [
+        38,
+        16
+      ]
+    },
+    {
+      "grid": [
+        1,
+        0
+      ],
+      "source_box": [
+        0,
+        627,
+        627,
+        1254
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 62423,
+      "selected_component_bbox": [
+        268,
+        17,
+        494,
+        460
+      ],
+      "crop_bbox": [
+        260,
+        9,
+        502,
+        468
+      ],
+      "edge_touch": false,
+      "output_size": [
+        52,
+        99
+      ],
+      "paste_position": [
+        38,
+        15
+      ]
+    },
+    {
+      "grid": [
+        1,
+        1
+      ],
+      "source_box": [
+        627,
+        627,
+        1254,
+        1254
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 63129,
+      "selected_component_bbox": [
+        98,
+        20,
+        324,
+        451
+      ],
+      "crop_bbox": [
+        90,
+        12,
+        332,
+        459
+      ],
+      "edge_touch": false,
+      "output_size": [
+        52,
+        97
+      ],
+      "paste_position": [
+        38,
+        17
+      ]
+    }
+  ],
+  "edge_touch_frames": []
+}

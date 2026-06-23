@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=31 format=3]
+[gd_resource type="TileSet" load_steps=45 format=3]
 
 [ext_resource type="Texture2D" path="res://assets/tiles/grass_tile.png" id="1_grass"]
 [ext_resource type="Texture2D" path="res://assets/tiles/dirt_path_tile.png" id="2_path"]
@@ -15,6 +15,48 @@
 [ext_resource type="Texture2D" path="res://assets/tiles/water_corner_top_right.png" id="13_wctr"]
 [ext_resource type="Texture2D" path="res://assets/tiles/water_corner_bottom_left.png" id="14_wcbl"]
 [ext_resource type="Texture2D" path="res://assets/tiles/water_corner_bottom_right.png" id="15_wcbr"]
+[ext_resource type="Texture2D" path="res://assets/tiles/beach_sand_tile.png" id="16_sand"]
+[ext_resource type="Texture2D" path="res://assets/tiles/ocean_water_tile.png" id="17_ocean"]
+[ext_resource type="Texture2D" path="res://assets/tiles/mountain_ground_tile.png" id="18_mtn"]
+[ext_resource type="Texture2D" path="res://assets/tiles/mushroom_moss_tile.png" id="19_moss"]
+[ext_resource type="Texture2D" path="res://assets/tiles/snow_tile.png" id="20_snow"]
+[ext_resource type="Texture2D" path="res://assets/tiles/cave_floor_tile.png" id="21_cave"]
+[ext_resource type="Texture2D" path="res://assets/tiles/stone_path_tile.png" id="22_stone"]
+
+[sub_resource type="TileSetAtlasSource" id="src_sand"]
+texture = ExtResource("16_sand")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="src_ocean"]
+texture = ExtResource("17_ocean")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="src_mtn"]
+texture = ExtResource("18_mtn")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="src_moss"]
+texture = ExtResource("19_moss")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="src_snow"]
+texture = ExtResource("20_snow")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="src_cave"]
+texture = ExtResource("21_cave")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="src_stone"]
+texture = ExtResource("22_stone")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="src_grass"]
 texture = ExtResource("1_grass")
@@ -108,3 +150,10 @@ sources/11 = SubResource("src_wctl")
 sources/12 = SubResource("src_wctr")
 sources/13 = SubResource("src_wcbl")
 sources/14 = SubResource("src_wcbr")
+sources/15 = SubResource("src_sand")
+sources/16 = SubResource("src_ocean")
+sources/17 = SubResource("src_mtn")
+sources/18 = SubResource("src_moss")
+sources/19 = SubResource("src_snow")
+sources/20 = SubResource("src_cave")
+sources/21 = SubResource("src_stone")

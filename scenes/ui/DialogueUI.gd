@@ -29,7 +29,12 @@ func open(npc_id: String) -> void:
 		return
 
 	_npc_id = npc_id
-	_lines = [String(def.get("greeting", ""))]
+	# Lead with a time-of-day greeting, then the NPC's greeting, a time-specific
+	# remark (if any), and finally the standard lines.
+	_lines = [_time_greeting(), String(def.get("greeting", ""))]
+	var time_line := String(db.call("get_time_line", npc_id, _current_phase()))
+	if time_line != "":
+		_lines.append(time_line)
 	for line in def.get("lines", []):
 		_lines.append(String(line))
 	_index = 0
@@ -117,6 +122,21 @@ func _build_ui() -> void:
 	next_btn.size_flags_horizontal = Control.SIZE_SHRINK_END
 	next_btn.pressed.connect(advance)
 	col.add_child(next_btn)
+
+
+func _current_phase() -> String:
+	var tm := get_node_or_null("/root/TimeManager")
+	return String(tm.call("get_phase")) if tm != null else ""
+
+
+func _time_greeting() -> String:
+	var tm := get_node_or_null("/root/TimeManager")
+	match (String(tm.call("get_phase")) if tm != null else ""):
+		"morning": return "Good morning!"
+		"afternoon": return "Good afternoon."
+		"evening": return "Good evening."
+		"night": return "You're up late."
+		_: return "Hello!"
 
 
 func _dialogue_db() -> Node:
