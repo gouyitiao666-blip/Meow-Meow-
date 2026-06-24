@@ -7,7 +7,7 @@ class_name NPC
 ## Builds its own sprite/collision/prompt so World can just instance it.
 
 const TEX_PROMPT: Texture2D = preload("res://assets/ui/talk_prompt_icon.png")
-const SCALE := 0.85
+const SCALE := 0.92      ## NPCs read as the same "human" tier as the player
 const FRAME := 128       ## NPC walk sheets are 2x2 grids of 128px frames
 const WALK_FPS := 7.0
 const WANDER_RADIUS := 120.0  ## NPCs stroll within this of their home spot
@@ -167,14 +167,35 @@ func _wander(delta: float) -> void:
 		_pick_wander_target()
 		_idle()
 		return
-	position += to / d * WANDER_SPEED * delta
+	var next := position + to / d * WANDER_SPEED * delta
+	# Don't step onto water/buildings/trees — pause and pick a fresh land target.
+	if not _can_stand(next):
+		_pause = randf_range(0.6, 1.6)
+		_pick_wander_target()
+		_idle()
+		return
+	position = next
 	_walk_toward(to)
 
 
+## Picks a roam target within WANDER_RADIUS that lands on walkable ground.
 func _pick_wander_target() -> void:
-	var ang := randf() * TAU
-	var r := sqrt(randf()) * WANDER_RADIUS
-	_wander_target = _anchor() + Vector2(cos(ang), sin(ang)) * r
+	for attempt in 8:
+		var ang := randf() * TAU
+		var r := sqrt(randf()) * WANDER_RADIUS
+		var candidate := _anchor() + Vector2(cos(ang), sin(ang)) * r
+		if _can_stand(candidate):
+			_wander_target = candidate
+			return
+	_wander_target = position  # nowhere good nearby → stay put
+
+
+## True if `pos` is walkable per the World (or if no World is found — fail open).
+func _can_stand(pos: Vector2) -> bool:
+	var world := get_tree().get_first_node_in_group("world")
+	if world == null or not world.has_method("is_walkable_world_pos"):
+		return true
+	return bool(world.call("is_walkable_world_pos", pos))
 
 
 ## The spot the NPC roams around: their "work" spot during the day, "home"

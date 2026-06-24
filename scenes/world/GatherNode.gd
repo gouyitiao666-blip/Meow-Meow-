@@ -16,12 +16,23 @@ var _player_near := false
 var _ready_to_gather := true
 var _sprite: Sprite2D
 var _prompt: Sprite2D
+var _body_col: CollisionShape2D  ## solid footprint (invisible wall), lifts while regrowing
 
 
 func _ready() -> void:
 	add_to_group("gather")
 	monitoring = true
 	collision_mask = 1
+
+	# Solid footprint so the rock/plant is an obstacle (Phase: obstacles for all).
+	var body := StaticBody2D.new()
+	_body_col = CollisionShape2D.new()
+	var box := RectangleShape2D.new()
+	box.size = Vector2(44, 28)
+	_body_col.shape = box
+	_body_col.position = Vector2(0, -10)
+	body.add_child(_body_col)
+	add_child(body)
 
 	_sprite = Sprite2D.new()
 	if prop_path != "" and ResourceLoader.exists(prop_path):
@@ -96,10 +107,14 @@ func _gather() -> void:
 	_ready_to_gather = false
 	_sprite.visible = false
 	_prompt.visible = false
+	if _body_col != null:
+		_body_col.disabled = true  # no invisible wall while it's gone
 	await get_tree().create_timer(regen_seconds).timeout
 	_ready_to_gather = true
 	if is_instance_valid(_sprite):
 		_sprite.visible = true
+	if is_instance_valid(_body_col):
+		_body_col.disabled = false
 
 
 func _on_body_entered(body: Node) -> void:

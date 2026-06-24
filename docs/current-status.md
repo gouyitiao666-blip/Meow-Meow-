@@ -83,23 +83,20 @@ NPCs) or needs design decisions (decoration placement, shop, tools).
   on start (can mask "new game" behavior in manual testing — delete it to reset).
 
 ## Assets that already exist (high level)
-Rich set present under `assets/`: player (walk 4-dir, idle, action poses), cat
-pet (walk 4-dir, idle, sleep), a large tiles set, nature props, farming
-(carrot stages/icons), fishing, items (drops), UI (panels/prompts/icons),
-buildings, tools (icons), effects, shadows, vehicles, and some animated PNGs.
+Rich set present under `assets/`: player (walk 4-dir, directional idles, action
+poses), pets/creatures (cat/dog/duck/bunny/eagle/penguin/bird/hamster/crab),
+a large tile set including interior and endgame tiles, nature props, farming
+crop stages/icons including corn and golden variants, fishing/legendary fish,
+items/dishes, UI (panels/prompts/icons/settings/shop/save/mastery), large
+stereoscopic 3/4 building props, upgraded in-world tool sprites, effects, shadows, vehicles, and
+animated PNGs.
 See [assets-needed.md](assets-needed.md) for the per-category checklist.
 
 ## Assets that are missing
-- **Pet art** for dog, duck, bunny (only cat exists).
-- **NPC characters / villagers** (no `assets/npc/`).
-- **Audio / music / SFX** (no `assets/audio/`).
-- Possibly: dedicated shop UI screen art (shop *buildings* exist; a shop *panel*
-  is `Unknown`). See [assets-needed.md](assets-needed.md).
+- No major PNG asset blockers currently listed in `docs/assets-needed.md`.
+- SFX remain out of scope for Phase 12; visual effects cover feedback.
 
 ## Next safest task
-**Phase 6.4 — a minimal Shop + money system**, OR a **decoration placement
-system (6.1)** — both can be built entirely with **existing assets** (coins,
-shop buildings, decoration data already exist), so they are not asset-blocked.
-If instead you want to keep hardening the MVP, the next safest step is adding
-more automated tests / a manual playtest pass. Pets (6.2) and NPCs (6.3) should
-wait until their art exists.
+Continue integrating existing Phase 12/13 systems, or run a manual playtest pass
+against the enlarged asset library. Shop, pets, NPCs, interiors, settings, and
+endgame concepts are no longer blocked on missing PNG art.

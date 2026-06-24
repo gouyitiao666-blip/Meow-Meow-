@@ -114,15 +114,24 @@ func _on_save() -> void:
 
 
 func _on_volume(value: float) -> void:
-	var bus := AudioServer.get_bus_index("Master")
-	AudioServer.set_bus_volume_db(bus, linear_to_db(maxf(value, 0.0001)))
+	var settings := get_node_or_null("/root/SettingsManager")
+	if settings != null:
+		settings.call("set_volume", value)
+	else:
+		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(maxf(value, 0.0001)))
 
 
 func _on_mute(pressed: bool) -> void:
 	_muted = pressed
-	AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), pressed)
+	var settings := get_node_or_null("/root/SettingsManager")
+	if settings != null:
+		settings.call("set_muted", pressed)
+	else:
+		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), pressed)
 
 
 func _linear_from_bus() -> float:
-	var bus := AudioServer.get_bus_index("Master")
-	return clampf(db_to_linear(AudioServer.get_bus_volume_db(bus)), 0.0, 1.0)
+	var settings := get_node_or_null("/root/SettingsManager")
+	if settings != null:
+		return float(settings.call("get_volume"))
+	return clampf(db_to_linear(AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master"))), 0.0, 1.0)

@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Meow Meow ~"
-run/main_scene="res://scenes/world/World.tscn"
+run/main_scene="res://scenes/ui/TitleScreen.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://assets/pets/cat_idle.png"
 
@@ -41,6 +41,8 @@ EnergyManager="*res://scripts/world/EnergyManager.gd"
 MailManager="*res://scripts/world/MailManager.gd"
 GameEvents="*res://scripts/world/GameEvents.gd"
 Effects="*res://scripts/world/Effects.gd"
+SettingsManager="*res://scripts/save/SettingsManager.gd"
+ControllerSetup="*res://scripts/world/ControllerSetup.gd"
 WeatherManager="*res://scripts/world/WeatherManager.gd"
 SeasonManager="*res://scripts/world/SeasonManager.gd"
 PetFriendship="*res://scripts/pets/PetFriendship.gd"
@@ -51,6 +53,10 @@ SaveManager="*res://scripts/save/SaveManager.gd"
 [display]
 
 window/stretch/mode="canvas_items"
+
+[gui]
+
+theme/custom="res://scenes/ui/MeowTheme.tres"
 
 [input]
 

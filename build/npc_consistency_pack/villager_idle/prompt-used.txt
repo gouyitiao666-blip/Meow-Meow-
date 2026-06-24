@@ -1,1 +1,0 @@
-Human villager NPC idle loop. No animals.

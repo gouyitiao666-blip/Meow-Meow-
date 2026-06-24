@@ -1,14 +1,13 @@
 # Assets Checklist — Meow Meow ~
 
-> Status derived from the actual `assets/` folder (2026-06-23).
+> Status derived from the actual `assets/` folder (2026-06-24).
 > Legend: **Existing** = file present · **Missing** = needed but absent ·
 > **Unknown** = unclear purpose / can't confirm fit without seeing it in-game.
 >
-> **Note:** the Phase 6–11 asset packs greatly expanded the library — now present:
-> all pets (cat/dog/duck/bunny/eagle/penguin), NPC villagers (idle/walk/portrait),
-> biome tiles (beach/ocean/mountain/moss/snow/cave), ores/crab/shell/glowing-mushroom
-> items, season/weather/festival effects, and 2 music tracks. Mostly-missing now:
-> **interior wall/floor/door tiles**, and a few creature sheets (crab/bird).
+> **Note:** Phase 6–13 asset packs greatly expanded the library. Current art now
+> covers pets/creatures, NPCs, crops, fish, buildings, interior pieces, shop and
+> settings UI, upgraded tools, polish UI, and endgame/mastery concepts. Remaining
+> work is mostly integration/code/scene wiring rather than missing PNG assets.
 
 ## Player assets
 | Asset | Status |
@@ -20,7 +19,7 @@
 | Pickup item (`player_pickup_item.png`) | Existing |
 | Hold fishing rod (`player_hold_fishing_rod.png`) | Existing |
 | Fishing pose (`player_fishing_pose.png`) | Existing |
-| Idle up / left / right (directional idles) | Missing (idle = walk frame 0 today) |
+| Idle up / left / right (directional idles) | Existing (`player_idle_left/right/up.png`) |
 
 ## Pet assets (`assets/pets/`)
 | Asset | Status |
@@ -33,7 +32,8 @@
 | Bunny (idle + walk) | Existing |
 | Eagle (idle + walk) | Existing |
 | Penguin (idle + walk) | Existing |
-| Bird / hamster | Missing |
+| Bird / hamster | Existing (idle, sleep, happy emote, 4-dir walk) |
+| Crab creature walk | Existing (4-dir walk + poses) |
 
 ## Map tiles (`assets/tiles/`)
 | Asset | Status |
@@ -46,6 +46,8 @@
 | Bridge (`bridge_tile.png`) | Existing |
 | Farm soil (`farm_soil_tile.png`) + edge + corner | Existing |
 | Wet soil (`wet_soil_tile.png`) | Existing |
+| Interior floor/wall/door/window tiles | Existing |
+| Endgame area tiles | Existing |
 
 ## Nature assets (`assets/nature/`)
 | Asset | Status |
@@ -64,7 +66,8 @@
 | Carrot growth stages 1–3 | Existing |
 | Carrot ready | Existing |
 | Carrot icon (inventory) | Existing |
-| Other crops (strawberry, tomato, pumpkin, corn, catnip) | Missing |
+| Other crops (strawberry, tomato, pumpkin, corn, catnip) | Existing |
+| Golden crop variants | Existing |
 
 ## Fishing assets (`assets/fishing/`)
 | Asset | Status |
@@ -74,7 +77,8 @@
 | Fishing rod icon | Existing |
 | Small fish icon | Existing |
 | Water splash | Existing |
-| Rare/other fish art | Missing |
+| Rare/other fish art | Existing |
+| Legendary fish art | Existing |
 
 ## UI assets (`assets/ui/`)
 | Asset | Status |
@@ -88,7 +92,10 @@
 | Tile highlights (green/red) + selection cursor + build preview shadow | Existing |
 | Pet emotes (happy/heart) + friendship hearts | Existing |
 | Toast / item popup / pause panels | Existing |
-| Shop screen panel (dedicated) | Unknown (panels exist; no explicit "shop" UI art) |
+| Shop screen panel (dedicated) | Existing (`shop_panel.png`, buy/sell panels, tabs, quantity/detail controls) |
+| Settings/options UI pieces | Existing |
+| Controls/accessibility/save-slot UI pieces | Existing |
+| Mastery/endgame UI pieces | Existing |
 
 ## Buildings (`assets/buildings/`)
 | Asset | Status |
@@ -100,6 +107,8 @@
 | Wooden bridge / crate / post | Existing |
 | Pet bed | Existing |
 | Mailbox / signboard / trash bin | Existing |
+| Large regenerated building set | Existing (384×384 stereoscopic 3/4 building PNGs) |
+| Phase 12/13 automation/endgame props | Existing |
 
 ## Decorations (assets live under `assets/buildings/` + `assets/nature/`)
 | Asset | Status |
@@ -119,13 +128,13 @@
 |---|---|
 | Shop building art | Existing (`assets/buildings/shop_building.png`, `pet_shop_building.png`) |
 | Coin icon / coin drop | Existing (`assets/ui/coin_icon.png`, `assets/items/coin_drop.png`) |
-| Shop screen / buy-sell UI | Unknown / Missing (no dedicated shop panel confirmed) |
+| Shop screen / buy-sell UI | Existing |
 
 ## Tool assets (`assets/tools/`)
 | Asset | Status |
 |---|---|
 | Hoe / watering can / axe / harvest / seed bag / hand icons | Existing |
-| In-world tool sprites / upgraded tiers | Missing |
+| In-world tool sprites / upgraded tiers | Existing |
 
 ## Effects / animations
 | Asset | Status |
@@ -135,3 +144,11 @@
 | Animated PNGs (`assets/animated/`): water, sea wave, grass/flower/bush sway, fountain, lantern/mushroom-lamp glow, windmill, car | Existing (usage in-engine: Unknown) |
 | Vehicles (`assets/vehicles/`): bicycle, cars, delivery van | Existing (gameplay role: Unknown) |
 | Music tracks (`assets/audio/*.mp3`) | Existing (2 tracks, day/night) |
+
+## Would-help (not blocking) — flagged by the visual-polish pass
+| Asset | Why |
+|---|---|
+| Sand↔water **shoreline** edge/corner tiles | The beach ocean & snow pond are framed by sand/snow, but the sand→water seam is still a hard cut (the existing `water_edge_*` tiles are grass-bordered, so they look wrong on sand). A shoreline set would make the coast blend. |
+| Grass→path and grass→soil **blend** edge tiles | The PNGs exist (`dirt_edge_*`, `farm_soil_edge/corner`) but aren't TileSet sources; adding them would soften those cuts. Out of scope for the polish pass (TileSet rework). |
+| Weather **fog** status icon (`weather_fog_icon.png`) | TimeUI shows a weather icon; there's no fog icon, so fog currently falls back to the cloudy icon. |
+| Note: `weather_*_overlay.png` (cloud/fog/rain/storm) | Small blob art unsuited to full-screen stretching — it produced muddy "stain" artifacts and is no longer used; weather is now a colour tint. Proper full-screen/animated weather art (or the `*_loop_sheet.png` variants wired as animation) could replace it later. |

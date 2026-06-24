@@ -56,6 +56,10 @@ func _build_ui() -> void:
 	add_child(center)
 
 	_panel = PanelContainer.new()
+	# Cozy decorative frame; big content margin keeps the grid inside the cream
+	# centre (clear of the wooden frame + corner flowers).
+	UiSkin.apply_panel(_panel, "res://assets/ui/inventory_panel.png", 54.0, 46.0)
+	_panel.custom_minimum_size = Vector2(360, 300)
 	center.add_child(_panel)
 
 	var margin := MarginContainer.new()
@@ -113,6 +117,7 @@ func _make_slot(id: String, count: int) -> Control:
 	var slot := PanelContainer.new()
 	slot.custom_minimum_size = SLOT_SIZE
 	slot.tooltip_text = "%s x%d" % [display_name, count]
+	UiSkin.apply_slot(slot, "res://assets/ui/inventory_slot.png")
 
 	# Icon (falls back to nothing if the asset is missing).
 	var icon := TextureRect.new()

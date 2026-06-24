@@ -1,1 +1,0 @@
-Human farmer NPC idle loop. No animals.

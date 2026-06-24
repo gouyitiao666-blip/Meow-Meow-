@@ -14,6 +14,22 @@ const WANDER_RADIUS := 150.0  ## ambient animals roam within this of their home
 const WANDER_SPEED := 45.0
 const WANDER_ARRIVE := 6.0
 
+## Render scale per animal (all share 128px frames, so 1.0 = player-sized).
+## Every animal must read clearly SMALLER than a human; a dog is close to but
+## under the player. The sprite's -28 offset keeps feet on the node origin at any
+## scale, so y-sort/standing position stay correct. Default ~0.5 for unlisted pets.
+const WORLD_SCALE := {
+	"cat": 0.55,
+	"dog": 0.62,
+	"duck": 0.42,
+	"bunny": 0.40,
+	"eagle": 0.55,
+	"penguin": 0.52,
+	"crab": 0.38,
+	"hamster": 0.32,
+}
+const DEFAULT_SCALE := 0.5
+
 # Fallback art if PetDatabase / the pet's assets are unavailable (the cat).
 const FALLBACK_SHEETS := {
 	"down": preload("res://assets/pets/cat_walk_down.png"),
@@ -46,21 +62,17 @@ var _pause := 0.0
 func _ready() -> void:
 	anim.sprite_frames = SpriteSheet.build_frames(_load_sheets(), FRAME, WALK_FPS)
 	anim.play("idle_down")
+	# Size the animal relative to the player (cat/duck/bunny etc. are small).
+	var s: float = float(WORLD_SCALE.get(pet_id, DEFAULT_SCALE))
+	anim.scale = Vector2(s, s)
 	_setup_emote()
 	if follow:
 		if target == null:
 			target = get_tree().get_first_node_in_group("player")
 	else:
-		# Ambient animals stand still and get an invisible wall; the follower
-		# stays non-physics so it never blocks the player (CLAUDE.md 2.4).
-		var body := StaticBody2D.new()
-		var shape := RectangleShape2D.new()
-		shape.size = Vector2(36, 18)
-		var col := CollisionShape2D.new()
-		col.shape = shape
-		col.position = Vector2(0, -8)
-		body.add_child(col)
-		add_child(body)
+		# Ambient animals roam but are non-physics too — a small roaming animal
+		# with a solid body reads as a "moving invisible wall", so the player can
+		# walk through ducks/bunnies/etc. (cozy; matches the follower cat).
 		_home = position
 		_pick_wander_target()
 
@@ -164,16 +176,37 @@ func _wander(delta: float) -> void:
 		return
 
 	var vel := to / d * WANDER_SPEED
-	position += vel * delta
+	var next := position + vel * delta
+	# Stay on believable ground — don't drift into water/buildings/trees.
+	if not _can_stand(next):
+		_pause = randf_range(0.5, 1.5)
+		_pick_wander_target()
+		_play("idle_" + facing)
+		return
+	position = next
 	facing = SpriteSheet.facing_from(vel)
 	anim.speed_scale = 1.0
 	_play("walk_" + facing)
 
 
+## Picks a roam target within WANDER_RADIUS that lands on walkable ground.
 func _pick_wander_target() -> void:
-	var ang := randf() * TAU
-	var r := sqrt(randf()) * WANDER_RADIUS
-	_wander_target = _home + Vector2(cos(ang), sin(ang)) * r
+	for attempt in 8:
+		var ang := randf() * TAU
+		var r := sqrt(randf()) * WANDER_RADIUS
+		var candidate := _home + Vector2(cos(ang), sin(ang)) * r
+		if _can_stand(candidate):
+			_wander_target = candidate
+			return
+	_wander_target = position  # nowhere good nearby → stay put
+
+
+## True if `pos` is walkable per the World (or if no World is found — fail open).
+func _can_stand(pos: Vector2) -> bool:
+	var world := get_tree().get_first_node_in_group("world")
+	if world == null or not world.has_method("is_walkable_world_pos"):
+		return true
+	return bool(world.call("is_walkable_world_pos", pos))
 
 
 ## Press F near the follower to feed it its favorite treat (Phase 7.4).

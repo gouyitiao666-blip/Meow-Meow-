@@ -2,13 +2,15 @@ extends CanvasLayer
 ## Seasonal particle overlay (Phase 7.6). Tiles a gentle season texture over the
 ## screen, swapped on SeasonManager's `season_changed`. Reads the backend only.
 
+# Season art lives in assets/effects/ (these are scattered petals/leaves/etc. on
+# transparent — tiled gently they read as drifting seasonal particles, not a stain).
 const SEASON_TEX := {
-	"spring": "res://assets/animated/season_spring_petals.png",
-	"summer": "res://assets/animated/season_summer_fireflies.png",
-	"autumn": "res://assets/animated/season_autumn_leaves.png",
-	"winter": "res://assets/animated/season_winter_snowflakes.png",
+	"spring": "res://assets/effects/season_spring_petals.png",
+	"summer": "res://assets/effects/season_summer_fireflies.png",
+	"autumn": "res://assets/effects/season_autumn_leaves.png",
+	"winter": "res://assets/effects/season_winter_snowflakes.png",
 }
-const OVERLAY_ALPHA := 0.35
+const OVERLAY_ALPHA := 0.22
 
 var _tex: TextureRect
 

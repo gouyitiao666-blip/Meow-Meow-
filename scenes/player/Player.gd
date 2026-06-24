@@ -28,8 +28,8 @@ func _ready() -> void:
 	anim.play("idle_down")
 
 	# A pose sprite shown during actions (fishing/farming/mining/foraging).
+	# Scale/offset are set per-texture in play_action so poses match the body.
 	_action_sprite = Sprite2D.new()
-	_action_sprite.offset = anim.offset
 	_action_sprite.visible = false
 	add_child(_action_sprite)
 
@@ -39,7 +39,14 @@ func _ready() -> void:
 func play_action(pose_path: String, seconds := 0.8) -> void:
 	if pose_path == "" or not ResourceLoader.exists(pose_path):
 		return
-	_action_sprite.texture = load(pose_path)
+	var tex: Texture2D = load(pose_path)
+	_action_sprite.texture = tex
+	# Action poses ship at 64px while the walk body is a 128px frame; scale the
+	# pose up to match and keep its feet on the same origin (offset -28 at 128px).
+	var h := tex.get_height()
+	var s := 128.0 / float(h) if h > 0 else 1.0
+	_action_sprite.scale = Vector2(s, s)
+	_action_sprite.offset = Vector2(0, -28.0 / s)
 	_action_sprite.flip_h = facing == "left"
 	_action_sprite.visible = true
 	anim.visible = false

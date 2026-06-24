@@ -58,6 +58,7 @@ const FARM_Y1 := 21
 
 const STARTER_SEEDS := 10  ## carrot seeds the player begins with (MVP convenience)
 const NATURE_GAP := 2  ## min Chebyshev distance between nature props (clean intervals)
+const PROP_BASELINE := 128  ## props bigger than this (e.g. 384px buildings) scale down to it
 
 const FARM_TILE_SCENE := preload("res://scenes/farming/FarmTile.tscn")
 
@@ -92,11 +93,14 @@ const TEX_WORKBENCH: Texture2D = preload("res://assets/buildings/storage_shed.pn
 const TOOL_UPGRADE_UI_SCENE := preload("res://scenes/ui/ToolUpgradeUI.tscn")
 const WORKBENCH_TRIGGER := preload("res://scenes/tools/WorkbenchTrigger.gd")
 const TIME_UI_SCENE := preload("res://scenes/ui/TimeUI.tscn")
-const WEATHER_TEXTURES := {
-	"cloudy": preload("res://assets/effects/weather_cloud_shadow_overlay.png"),
-	"rain": preload("res://assets/effects/weather_rain_overlay.png"),
-	"storm": preload("res://assets/effects/weather_storm_overlay.png"),
-	"fog": preload("res://assets/effects/weather_fog_overlay.png"),
+# Weather is shown as a gentle full-screen colour wash, NOT a stretched texture.
+# (The old `weather_*_overlay.png` art is a small blob that, scaled to fill the
+# screen at low alpha, blended into muddy brown "stains" over the grass.)
+const WEATHER_TINTS := {
+	"cloudy": Color(0.62, 0.64, 0.70, 0.12),  # soft grey haze
+	"rain": Color(0.45, 0.52, 0.64, 0.20),    # cool blue-grey
+	"storm": Color(0.28, 0.31, 0.42, 0.32),   # darker, heavier
+	"fog": Color(0.86, 0.87, 0.90, 0.24),     # pale white haze
 }
 
 @onready var tilemap: TileMapLayer = $TileMapLayer
@@ -106,9 +110,10 @@ const DECORATION_PLACER := preload("res://scenes/world/DecorationPlacer.gd")
 var _water_cells: Array[Vector2i] = []  ## solid water tiles (collected while painting)
 var _reserved: Dictionary = {}  ## cells nature must avoid (paths, water, structures, spawn)
 var _nature_cells: Array[Vector2i] = []  ## placed nature props, for interval spacing
+var _solid_cells: Dictionary = {}  ## cells NPCs/animals must not wander into (water + structures + nature)
 var _placed_decorations: Array = []  ## player-placed decorations (build mode), for removal
 var _weather_overlay: CanvasLayer
-var _weather_texture: TextureRect
+var _weather_tint: ColorRect
 
 
 func _ready() -> void:
@@ -137,6 +142,7 @@ func _ready() -> void:
 	add_child(preload("res://scenes/ui/MuseumUI.tscn").instantiate())       # 10.4 collections
 	add_child(preload("res://scenes/ui/MailUI.tscn").instantiate())         # 10.2 mail
 	add_child(preload("res://scenes/ui/PauseUI.tscn").instantiate())        # 12.2 pause/options
+	add_child(preload("res://scenes/ui/OnboardingHints.gd").new())          # 12.3 first-run hints
 	_build_kitchen()
 	_build_community()
 	_build_weather_overlay()
@@ -262,13 +268,11 @@ func _build_weather_overlay() -> void:
 	_weather_overlay.visible = false
 	add_child(_weather_overlay)
 
-	_weather_texture = TextureRect.new()
-	_weather_texture.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_weather_texture.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_weather_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_weather_texture.stretch_mode = TextureRect.STRETCH_SCALE
-	_weather_texture.modulate = Color(1, 1, 1, 0.36)
-	_weather_overlay.add_child(_weather_texture)
+	_weather_tint = ColorRect.new()
+	_weather_tint.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_weather_tint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_weather_tint.color = Color(0, 0, 0, 0)
+	_weather_overlay.add_child(_weather_tint)
 
 	var wm := _weather_manager()
 	if wm != null:
@@ -281,13 +285,12 @@ func _on_weather_changed(weather: String, _previous_weather: String) -> void:
 
 
 func _apply_weather_visual(weather: String) -> void:
-	if _weather_overlay == null or _weather_texture == null:
+	if _weather_overlay == null or _weather_tint == null:
 		return
-	if not WEATHER_TEXTURES.has(weather):
+	if not WEATHER_TINTS.has(weather):
 		_weather_overlay.visible = false
-		_weather_texture.texture = null
 		return
-	_weather_texture.texture = WEATHER_TEXTURES[weather]
+	_weather_tint.color = WEATHER_TINTS[weather]
 	_weather_overlay.visible = true
 
 
@@ -482,8 +485,11 @@ func _reserve_functional_tiles() -> void:
 ## Solid buildings/fences. Each reserves a footprint so nature won't overlap them.
 func _build_structures() -> void:
 	# --- Home (bottom-center): a clear, prominent house + pet bed ---
-	_place_structure(TEX_HOUSE, Vector2i(16, 21), 1.8, Rect2i(14, 18, 5, 5))
-	_place_structure(TEX_PET_BED, Vector2i(23, 23), 1.15, Rect2i(22, 22, 2, 2))
+	# Buildings render at ~128*scale px (art is 384px, normalized to a 128 baseline),
+	# so a scale of ~2.0 makes a house ~256px — clearly bigger than the ~80px player,
+	# enterable-looking, while furniture (pet bed) stays human-scale or smaller.
+	_place_structure(TEX_HOUSE, Vector2i(16, 21), 2.0, Rect2i(14, 18, 5, 5))
+	_place_structure(TEX_PET_BED, Vector2i(23, 23), 1.0, Rect2i(22, 22, 2, 2))
 	# Front-yard fence with a gap at the path (x=20).
 	for x in [15, 16, 17, 18, 19, 21, 22, 23, 24]:
 		_place_structure(TEX_FENCE, Vector2i(x, 26), 1.0, Rect2i(x, 26, 1, 1))
@@ -504,6 +510,7 @@ func _place_structure(tex: Texture2D, tile: Vector2i, prop_scale: float, footpri
 	for x in range(footprint.position.x, footprint.position.x + footprint.size.x):
 		for y in range(footprint.position.y, footprint.position.y + footprint.size.y):
 			_reserved[Vector2i(x, y)] = true
+			_solid_cells[Vector2i(x, y)] = true  # NPCs/animals route around buildings
 
 
 ## Frames the map with a ring of trees so the world feels like a cozy clearing in
@@ -535,22 +542,26 @@ func _place_nature(tex: Texture2D, tile: Vector2i, prop_scale := 1.0) -> bool:
 	for n in _nature_cells:
 		if absi(n.x - tile.x) < NATURE_GAP and absi(n.y - tile.y) < NATURE_GAP:
 			return false
-	_spawn_prop(tex, tile, true, prop_scale)  # every nature prop is now solid
+	# Every nature prop is a solid obstacle (invisible wall). The wall is only the
+	# art's BASE footprint (bottom slice), so a flower blocks just its little stem
+	# and a tree blocks its trunk — never the whole canopy or a path tile.
+	_spawn_prop(tex, tile, true, prop_scale)
 	_nature_cells.append(tile)
 	_reserved[tile] = true
+	_solid_cells[tile] = true  # NPCs/animals route around it
 	return true
 
 
 ## Phase 10/11 community spots: museum (donate), mailbox, and a sleep spot.
 func _build_community() -> void:
-	_place_structure(TEX_MUSEUM, Vector2i(36, 20), 1.0, Rect2i(35, 19, 3, 2))
+	_place_structure(TEX_MUSEUM, Vector2i(36, 20), 2.0, Rect2i(35, 18, 3, 3))
 	var museum_trigger := UI_TRIGGER.new()
 	museum_trigger.name = "MuseumTrigger"
 	museum_trigger.ui_group = "museum_ui"
 	museum_trigger.position = _tile_center(36, 21)
 	add_child(museum_trigger)
 
-	_place_structure(TEX_MAILBOX, Vector2i(11, 23), 1.0, Rect2i(11, 23, 1, 1))
+	_place_structure(TEX_MAILBOX, Vector2i(11, 23), 0.85, Rect2i(11, 23, 1, 1))
 	var mail_trigger := UI_TRIGGER.new()
 	mail_trigger.name = "MailboxTrigger"
 	mail_trigger.ui_group = "mail_ui"
@@ -621,11 +632,13 @@ func _spawn_gather(item_id: String, prop_path: String, tile: Vector2i, gather_ev
 ## 8.1 Beach — sand with an ocean strip + ocean fishing (shells/crab) + beach decor.
 ## Spaced biome at the far bottom-left.
 func _build_beach() -> void:
+	# Sand band; the ocean is inset one tile inside it on every side so the water
+	# is always framed by sand (grass → sand → sea, never grass touching sea).
 	_fill_tiles(2, 10, 39, 43, SRC_SAND)
-	_fill_water(2, 10, 42, 43)
+	_fill_water(3, 9, 41, 42)
 	_spawn_fishing_spot("ocean", Vector2i(6, 41))
-	_spawn_path("res://assets/nature/beach_shell_pile.png", Vector2i(3, 40), false)
-	_spawn_path("res://assets/buildings/coral_starfish_decor.png", Vector2i(9, 40), false)
+	_spawn_path("res://assets/nature/beach_shell_pile.png", Vector2i(3, 40), true)
+	_spawn_path("res://assets/buildings/coral_starfish_decor.png", Vector2i(9, 40), true)
 
 
 ## 8.3 Mushroom Forest — moss, glowing mushrooms, a bunny village, and foraging.
@@ -634,10 +647,10 @@ func _build_mushroom_forest() -> void:
 	for t in [Vector2i(16, 40), Vector2i(22, 40)]:
 		_spawn_prop(TEX_MUSH_LAMP, t, true)
 	# Bunny village + giant/glowing mushroom decor.
-	_spawn_path("res://assets/buildings/bunny_stump_house.png", Vector2i(16, 42), true)
-	_spawn_path("res://assets/buildings/village_house_medium.png", Vector2i(22, 42), true, 0.9)
+	_spawn_path("res://assets/buildings/bunny_stump_house.png", Vector2i(16, 42), true, 1.6)
+	_spawn_path("res://assets/buildings/village_house_medium.png", Vector2i(22, 42), true, 1.8)
 	_spawn_path("res://assets/nature/giant_red_mushroom.png", Vector2i(19, 40), true)
-	_spawn_path("res://assets/nature/glowing_mushroom_cluster.png", Vector2i(23, 40), false)
+	_spawn_path("res://assets/nature/glowing_mushroom_cluster.png", Vector2i(23, 40), true)
 	# Forage a rare glowing plant.
 	_spawn_gather("glowing_mushroom", "res://assets/nature/rare_glowing_plant.png", Vector2i(18, 43), "forage")
 	_spawn_idle_pet("bunny", Vector2i(20, 43))
@@ -663,10 +676,12 @@ func _build_mountain() -> void:
 ## 8.4 Snow — snowfield with a frozen pond (winter fishing), a penguin, and
 ## icy decor.
 func _build_snow() -> void:
+	# Snowfield with a frozen pond inset so snow frames the ice on every side
+	# (no water abutting the grass to the south).
 	_fill_tiles(41, 49, 39, 43, SRC_SNOW)
-	_fill_water(44, 47, 41, 43)  # frozen pond
+	_fill_water(44, 47, 41, 42)  # frozen pond, framed by snow
 	_spawn_fishing_spot("frozen_pond", Vector2i(45, 40))
-	_spawn_path("res://assets/nature/frozen_pond_marker.png", Vector2i(45, 40), false)
+	_spawn_path("res://assets/nature/frozen_pond_marker.png", Vector2i(45, 40), true)
 	for t in [Vector2i(42, 40), Vector2i(48, 42), Vector2i(43, 43)]:
 		_spawn_path("res://assets/nature/icy_crystal_cluster.png", t, true)
 	_spawn_idle_pet("penguin", Vector2i(43, 42))
@@ -685,7 +700,8 @@ func _build_shop() -> void:
 	add_child(shop_ui)
 
 	# Store building east of the central path crossroads, on open grass.
-	_place_structure(TEX_SHOP, Vector2i(31, 16), 1.4, Rect2i(30, 15, 3, 2))
+	# Slightly bigger than the house so the general store reads as the main shop.
+	_place_structure(TEX_SHOP, Vector2i(31, 16), 2.2, Rect2i(29, 14, 4, 3))
 
 	var trigger := SHOP_TRIGGER.new()
 	trigger.name = "GeneralStoreTrigger"
@@ -699,7 +715,7 @@ func _build_workbench() -> void:
 	var ui := TOOL_UPGRADE_UI_SCENE.instantiate()
 	add_child(ui)
 
-	_place_structure(TEX_WORKBENCH, Vector2i(26, 20), 1.2, Rect2i(25, 19, 2, 2))
+	_place_structure(TEX_WORKBENCH, Vector2i(26, 20), 1.8, Rect2i(25, 18, 3, 3))
 
 	var trigger := WORKBENCH_TRIGGER.new()
 	trigger.name = "WorkbenchTrigger"
@@ -773,6 +789,7 @@ func _build_water_collision() -> void:
 	body.name = "WaterBody"
 	add_child(body)
 	for cell in _water_cells:
+		_solid_cells[cell] = true  # NPCs/animals never wander into water
 		var shape := RectangleShape2D.new()
 		shape.size = Vector2(TILE, TILE)
 		var col := CollisionShape2D.new()
@@ -802,9 +819,14 @@ func _spawn_prop_at_base(tex: Texture2D, base: Vector2, solid: bool, prop_scale 
 	if img != null:
 		used = img.get_used_rect()
 
+	# Normalize oversized art (e.g. 384px buildings) down to a ~128px baseline so
+	# everything renders at a reasonable, tile-relative size. Already-small art
+	# (128px nature, tiny decor) is left untouched. `prop_scale` still tunes each.
+	var eff_scale := prop_scale * minf(1.0, float(PROP_BASELINE) / float(maxi(tw, th)))
+
 	var sprite := Sprite2D.new()
 	sprite.texture = tex
-	sprite.scale = Vector2(prop_scale, prop_scale)
+	sprite.scale = Vector2(eff_scale, eff_scale)
 	# Anchor by content bottom so props with transparent padding sit on the ground.
 	sprite.offset = Vector2(0, th / 2.0 - float(used.position.y + used.size.y))
 
@@ -812,13 +834,13 @@ func _spawn_prop_at_base(tex: Texture2D, base: Vector2, solid: bool, prop_scale 
 		var body := StaticBody2D.new()
 		body.position = base
 		var foot := _ground_footprint(img, used)  # base-only area, in source pixels
-		var box := Vector2(foot.size) * prop_scale + Vector2(WALL_MARGIN, WALL_MARGIN) * 2.0
-		var cx := (foot.position.x + foot.size.x / 2.0 - tw / 2.0) * prop_scale
+		var box := Vector2(foot.size) * eff_scale + Vector2(WALL_MARGIN, WALL_MARGIN) * 2.0
+		var cx := (foot.position.x + foot.size.x / 2.0 - tw / 2.0) * eff_scale
 		var shape := RectangleShape2D.new()
 		shape.size = box
 		var col := CollisionShape2D.new()
 		col.shape = shape
-		col.position = Vector2(cx, -float(foot.size.y) * prop_scale / 2.0)  # hugs the base
+		col.position = Vector2(cx, -float(foot.size.y) * eff_scale / 2.0)  # hugs the base
 		body.add_child(sprite)
 		body.add_child(col)
 		add_child(body)
@@ -854,6 +876,17 @@ func _ground_footprint(img: Image, used: Rect2i) -> Rect2i:
 ## Tile coordinate under a world-space position (e.g. the mouse).
 func tile_from_world(world_pos: Vector2) -> Vector2i:
 	return Vector2i(int(floor(world_pos.x / TILE)), int(floor(world_pos.y / TILE)))
+
+
+## True when a world position is in-bounds and not on a solid cell (water,
+## building footprint, or nature). NPCs/ambient animals use this to keep their
+## wandering on believable ground — never into water, buildings, fences, or trees.
+## Farm soil, paths, sand, and biome ground stay walkable.
+func is_walkable_world_pos(world_pos: Vector2) -> bool:
+	var t := tile_from_world(world_pos)
+	if t.x < 0 or t.y < 0 or t.x >= MAP_W or t.y >= MAP_H:
+		return false
+	return not _solid_cells.has(t)
 
 
 ## A tile can hold a placed decoration only if it is in-bounds, plain grass, and

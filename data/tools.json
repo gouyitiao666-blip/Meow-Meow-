@@ -1,112 +1,112 @@
 {
   "tools": {
-    "hoe": {
-      "name": "Hoe",
-      "icon": "res://assets/tools/hoe_icon.png",
-      "action_asset": "res://assets/characters/player_use_hoe.png",
-      "max_level": 3,
-      "upgrade_costs": [
-        {
-          "level": 2,
-          "money": 75,
-          "items": {
-            "wood": 5,
-            "stone": 2
-          }
-        },
-        {
-          "level": 3,
-          "money": 160,
-          "items": {
-            "wood": 10,
-            "stone": 6,
-            "rare_blue_ore": 1
-          }
-        }
-      ]
-    },
-    "watering_can": {
-      "name": "Watering Can",
-      "icon": "res://assets/tools/watering_can_icon.png",
-      "action_asset": "res://assets/characters/player_use_watering_can.png",
-      "max_level": 3,
-      "upgrade_costs": [
-        {
-          "level": 2,
-          "money": 80,
-          "items": {
-            "wood": 4,
-            "stone": 4
-          }
-        },
-        {
-          "level": 3,
-          "money": 170,
-          "items": {
-            "stone": 10,
-            "shell": 3
-          }
-        }
-      ]
-    },
-    "axe": {
-      "name": "Axe",
-      "icon": "res://assets/tools/axe_icon.png",
-      "action_asset": "res://assets/characters/player_use_axe.png",
-      "max_level": 3,
-      "upgrade_costs": [
-        {
-          "level": 2,
-          "money": 90,
-          "items": {
-            "wood": 8,
-            "stone": 3
-          }
-        },
-        {
-          "level": 3,
-          "money": 190,
-          "items": {
-            "wood": 14,
-            "stone": 8
-          }
-        }
-      ]
-    },
-    "pickaxe": {
-      "name": "Pickaxe",
-      "icon": "res://assets/tools/pickaxe_icon.png",
-      "action_asset": "res://assets/characters/player_use_pickaxe.png",
-      "max_level": 3,
-      "upgrade_costs": [
-        {
-          "level": 2,
-          "money": 90,
-          "items": {
-            "wood": 4,
-            "stone": 8
-          }
-        },
-        {
-          "level": 3,
-          "money": 190,
-          "items": {
-            "stone": 14,
-            "shell": 2
-          }
-        }
-      ]
-    },
-    "hand": {
-      "name": "Hand",
-      "icon": "res://assets/tools/hand_icon.png",
-      "action_asset": "res://assets/characters/player_hold_item.png",
-      "max_level": 1,
-      "upgrade_costs": []
-    }
+	"hoe": {
+	  "name": "Hoe",
+	  "icon": "res://assets/tools/hoe_icon.png",
+	  "action_asset": "res://assets/characters/player_use_hoe.png",
+	  "max_level": 3,
+	  "upgrade_costs": [
+		{
+		  "level": 2,
+		  "money": 75,
+		  "items": {
+			"wood": 5,
+			"stone": 2
+		  }
+		},
+		{
+		  "level": 3,
+		  "money": 160,
+		  "items": {
+			"wood": 10,
+			"stone": 6,
+			"rare_blue_ore": 1
+		  }
+		}
+	  ]
+	},
+	"watering_can": {
+	  "name": "Watering Can",
+	  "icon": "res://assets/tools/watering_can_icon.png",
+	  "action_asset": "res://assets/characters/player_use_watering_can.png",
+	  "max_level": 3,
+	  "upgrade_costs": [
+		{
+		  "level": 2,
+		  "money": 80,
+		  "items": {
+			"wood": 4,
+			"stone": 4
+		  }
+		},
+		{
+		  "level": 3,
+		  "money": 170,
+		  "items": {
+			"stone": 10,
+			"shell": 3
+		  }
+		}
+	  ]
+	},
+	"axe": {
+	  "name": "Axe",
+	  "icon": "res://assets/tools/axe_icon.png",
+	  "action_asset": "res://assets/characters/player_use_axe.png",
+	  "max_level": 3,
+	  "upgrade_costs": [
+		{
+		  "level": 2,
+		  "money": 90,
+		  "items": {
+			"wood": 8,
+			"stone": 3
+		  }
+		},
+		{
+		  "level": 3,
+		  "money": 190,
+		  "items": {
+			"wood": 14,
+			"stone": 8
+		  }
+		}
+	  ]
+	},
+	"pickaxe": {
+	  "name": "Pickaxe",
+	  "icon": "res://assets/tools/pickaxe_icon.png",
+	  "action_asset": "res://assets/characters/player_use_pickaxe.png",
+	  "max_level": 3,
+	  "upgrade_costs": [
+		{
+		  "level": 2,
+		  "money": 90,
+		  "items": {
+			"wood": 4,
+			"stone": 8
+		  }
+		},
+		{
+		  "level": 3,
+		  "money": 190,
+		  "items": {
+			"stone": 14,
+			"shell": 2
+		  }
+		}
+	  ]
+	},
+	"hand": {
+	  "name": "Hand",
+	  "icon": "res://assets/tools/hand_icon.png",
+	  "action_asset": "res://assets/characters/player_hold_item.png",
+	  "max_level": 1,
+	  "upgrade_costs": []
+	}
   },
   "repair": {
-    "base_money": 10,
-    "per_level_money": 8
+	"base_money": 10,
+	"per_level_money": 8
   }
 }

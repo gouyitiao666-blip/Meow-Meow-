@@ -26,6 +26,7 @@ var _active := false
 var _ghost: Sprite2D
 var _highlight: Sprite2D
 var _label: Label
+var _label_panel: PanelContainer
 
 
 func _ready() -> void:
@@ -42,12 +43,23 @@ func _ready() -> void:
 	_ghost.modulate = Color(1, 1, 1, PREVIEW_ALPHA)
 	add_child(_ghost)
 
+	# Build-mode hint sits in a cozy panel at the bottom (no text floating on the world).
 	var layer := CanvasLayer.new()
 	layer.layer = 11
 	add_child(layer)
+	_label_panel = PanelContainer.new()
+	_label_panel.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	_label_panel.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	_label_panel.offset_top = -70
+	_label_panel.offset_bottom = -22
+	_label_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	layer.add_child(_label_panel)
+	var margin := MarginContainer.new()
+	for side in ["left", "right", "top", "bottom"]:
+		margin.add_theme_constant_override("margin_" + side, 10)
+	_label_panel.add_child(margin)
 	_label = Label.new()
-	_label.position = Vector2(12, 12)
-	layer.add_child(_label)
+	margin.add_child(_label)
 
 	_set_active(false)
 
@@ -86,7 +98,7 @@ func _set_active(on: bool) -> void:
 	_active = on and not _ids.is_empty()
 	_ghost.visible = _active
 	_highlight.visible = _active
-	_label.visible = _active
+	_label_panel.visible = _active
 	if _active:
 		_update_label()
 		_update_preview()

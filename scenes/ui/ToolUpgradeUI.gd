@@ -115,7 +115,8 @@ func _build_ui() -> void:
 	_root.add_child(center)
 
 	var panel := PanelContainer.new()
-	panel.custom_minimum_size = Vector2(420, 380)
+	panel.custom_minimum_size = Vector2(460, 410)
+	# Uses the clean global parchment theme (a tidy list card).
 	center.add_child(panel)
 
 	var margin := MarginContainer.new()
@@ -177,9 +178,25 @@ func _make_row(tool_id: String, tool: Dictionary) -> Control:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 8)
 
+	# Tool icon in a slot, then the name + level.
+	var slot := PanelContainer.new()
+	slot.custom_minimum_size = Vector2(40, 40)
+	slot.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	UiSkin.apply_slot(slot, "res://assets/ui/tool_slot.png")
+	var icon := TextureRect.new()
+	icon.custom_minimum_size = Vector2(30, 30)
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	var icon_path := String(tool.get("icon", ""))
+	if icon_path != "" and ResourceLoader.exists(icon_path):
+		icon.texture = load(icon_path)
+	slot.add_child(icon)
+	row.add_child(slot)
+
 	var name_label := Label.new()
 	name_label.text = "%s  Lv %d/%d" % [String(tool.get("name", tool_id)), level, max_level]
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	name_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(name_label)
 
 	var btn := Button.new()

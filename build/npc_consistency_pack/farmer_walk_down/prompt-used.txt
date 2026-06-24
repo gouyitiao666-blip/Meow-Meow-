@@ -1,1 +1,0 @@
-Human farmer NPC walk-down loop. No animals.

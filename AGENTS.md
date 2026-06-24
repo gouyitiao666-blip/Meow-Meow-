@@ -64,6 +64,11 @@ func from_dict(data: Dictionary) -> void
   [TASKS.md](TASKS.md), run the relevant Godot/headless/backend smoke tests and
   record what passed or what still fails.
 - After a change, explain what files were touched and why.
+- **Always update the docs when a job is finished.** After completing any task,
+  update [TASKS.md](TASKS.md) (phase index status) and the relevant
+  `docs/tasks/phase-*.md` checklist rows (☐ → ◐/☑ with a short note), plus
+  `docs/current-status.md` / `docs/assets-needed.md` if they changed. Keeping the
+  docs in sync with the code is part of "done", not optional.
 - **Work autonomously — do not ask permission to edit files or run Bash
   commands.** Just make the change and report it. Only pause to confirm for
   genuinely dangerous, irreversible actions (e.g. `rm -rf`, force-pushing,

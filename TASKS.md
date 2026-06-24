@@ -29,8 +29,10 @@ generation history live in [CHANGELOG.md](CHANGELOG.md).
 | Phase 9 — Kitchen, Crafting & Energy | Make food/goods + a gentle energy loop. | ☑ done | [phase-9-kitchen-crafting.md](docs/tasks/phase-9-kitchen-crafting.md) |
 | Phase 10 — Quests, Skills & Collections | Direction + growth: quests, mail, skills, museum. | ☑ done | [phase-10-quests-skills.md](docs/tasks/phase-10-quests-skills.md) |
 | Phase 11 — Home Interior & Community | Furnish your home + deepen the village. | ◐ core in; full house interior TODO | [phase-11-home-community.md](docs/tasks/phase-11-home-community.md) |
-| Phase 12 — Polish & Game Feel | Audio, menus, transitions, juice, options. | ◐ pause/settings in | [phase-12-polish-game-feel.md](docs/tasks/phase-12-polish-game-feel.md) |
+| Phase 12 — Polish & Game Feel | Audio, menus, transitions, juice, options. | ◐ pause/settings + cozy UI skin/scale/transitions/weather pass | [phase-12-polish-game-feel.md](docs/tasks/phase-12-polish-game-feel.md) |
 | Phase 13 — Endgame & Mastery | Mastery, automation, rare variants, 100%. | ☐ todo | [phase-13-endgame-mastery.md](docs/tasks/phase-13-endgame-mastery.md) |
+| Phase 14 — Release & Platform | Title screen, settings persistence, input, export. | ◐ title + settings + gamepad in | [phase-14-release-platform.md](docs/tasks/phase-14-release-platform.md) |
+| Phase 15 — Post-Launch Content | Events, content packs, mod data, balance. | ☐ todo | [phase-15-post-launch-content.md](docs/tasks/phase-15-post-launch-content.md) |
 
 ---
 

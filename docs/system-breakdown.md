@@ -34,9 +34,27 @@
 - **Main files:** `scenes/world/World.tscn`, `scenes/world/World.gd`,
   `scenes/world/MeowTileSet.tres`.
 - **Status:** Implemented. 52×46 map built from code: forest, river+bridge,
-  pond, paths, farm, home, shop, workbench; border walls + per-tile water
-  collision (bridge excluded); nature props placed with a reservation + spacing
-  guard, all solid. NPCs + ambient pets have solid footprints too.
+  pond, paths, farm, home, shop, workbench, + 4 spaced biomes (beach/mushroom/
+  mountain/snow) linked by a southern path; border walls + per-tile water
+  collision (bridge excluded).
+- **Prop sizing:** `_spawn_prop` normalizes oversized art down to a ~128px
+  baseline (`PROP_BASELINE`), so 384px buildings render at a reasonable
+  tile-relative size while 128px nature is untouched; per-prop `scale` still tunes.
+- **Collision policy (obstacles):** every solid world object has a footprint
+  invisible wall — nature props, structures, biome decor, NPCs, ambient pets,
+  and gather nodes (a gather node's wall lifts while it regrows). Deliberately
+  walkable: tiles the player must stand on/in (FarmTile soil, fishing spots,
+  shop/craft/UI interaction triggers) and the follower cat (must never block).
+- **Water transitions:** river + central pond use grass-bordered edge/corner
+  tiles; the beach ocean and snow frozen-pond are inset one tile inside their
+  sand/snow band so ground always frames the water (grass → sand → sea, never
+  grass on sea). See [visual-rules.md](visual-rules.md).
+- **Weather visual:** a gentle full-screen colour tint per state
+  (`WEATHER_TINTS`), not a stretched blob texture (the old overlay art blended
+  into muddy "stains").
+- **NPC/animal zones:** `is_walkable_world_pos()` (backed by a `_solid_cells`
+  set) lets NPCs/ambient pets validate wander targets so they never stroll into
+  water, buildings, fences, or trees; the follower cat is exempt.
 - **Next step:** If decoration placement lands, let player-placed objects share
   the same reservation/collision approach.
 
@@ -63,6 +81,11 @@
   via `scripts/data/ItemDatabase.gd`.
 - **Status:** Implemented. UI reads `Inventory.get_all_items()` and refreshes on
   the `inventory_changed` signal. Toggle with `I` (or `Esc` to close).
+- **UI skin (cross-cutting):** a global cozy theme (`scenes/ui/MeowTheme.tres`,
+  registered via `project.godot → gui/theme/custom`) skins all panels/buttons/
+  labels; priority panels (Inventory/Dialogue/Shop) apply bespoke `assets/ui`
+  art through `scenes/ui/UiSkin.gd`. TimeUI/EnergyUI show status icons
+  (time-of-day, weather, season, energy). See [visual-rules.md](visual-rules.md).
 - **Next step:** Item stacking limits / categories / selected-slot interactions
   as gameplay grows.
 

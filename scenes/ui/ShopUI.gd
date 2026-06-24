@@ -84,7 +84,10 @@ func _build_ui() -> void:
 	_root.add_child(center)
 
 	var panel := PanelContainer.new()
-	panel.custom_minimum_size = Vector2(360, 380)
+	# Wide enough that each row's name + Buy + Sell fit inside the cream centre
+	# (the big content margin clears the decorative frame).
+	panel.custom_minimum_size = Vector2(520, 440)
+	UiSkin.apply_panel(panel, "res://assets/ui/shop_panel.png", 50.0, 46.0)
 	center.add_child(panel)
 
 	var margin := MarginContainer.new()
@@ -102,6 +105,14 @@ func _build_ui() -> void:
 	_title.text = "Shop"
 	_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(_title)
+	var coin_icon := TextureRect.new()
+	coin_icon.custom_minimum_size = Vector2(24, 24)
+	coin_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	coin_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	coin_icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	if ResourceLoader.exists("res://assets/ui/coin_small_icon.png"):
+		coin_icon.texture = load("res://assets/ui/coin_small_icon.png")
+	header.add_child(coin_icon)
 	_coins = Label.new()
 	_coins.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	header.add_child(_coins)
@@ -160,17 +171,23 @@ func _make_row(entry: Dictionary) -> Control:
 	var name_label := Label.new()
 	name_label.text = "%s (x%d)" % [display_name, owned]
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	name_label.clip_text = true
+	name_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(name_label)
 
 	var buy_btn := Button.new()
 	buy_btn.text = "Buy %d" % buy_price
+	buy_btn.custom_minimum_size = Vector2(92, 0)
 	buy_btn.disabled = buy_price < 0 or wallet == null or not bool(wallet.call("can_spend", buy_price))
+	UiSkin.apply_button(buy_btn, Color(0.74, 0.86, 0.62))  # gentle green
 	buy_btn.pressed.connect(buy.bind(item_id))
 	row.add_child(buy_btn)
 
 	var sell_btn := Button.new()
 	sell_btn.text = "Sell %d" % sell_price
+	sell_btn.custom_minimum_size = Vector2(92, 0)
 	sell_btn.disabled = sell_price < 0 or owned <= 0
+	UiSkin.apply_button(sell_btn, Color(0.94, 0.8, 0.58))  # gentle amber
 	sell_btn.pressed.connect(sell.bind(item_id))
 	row.add_child(sell_btn)
 

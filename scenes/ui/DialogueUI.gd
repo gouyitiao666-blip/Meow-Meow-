@@ -85,31 +85,46 @@ func _build_ui() -> void:
 	panel.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	panel.offset_left = 24
 	panel.offset_right = -24
-	panel.offset_top = -160
-	panel.offset_bottom = -24
+	panel.offset_top = -190
+	panel.offset_bottom = -22
+	# Big content margin so the portrait/text sit in the cream centre, clear of
+	# the wooden frame + corner flower.
+	UiSkin.apply_panel(panel, "res://assets/ui/dialogue_box.png", 34.0, 38.0)
 	_root.add_child(panel)
 
 	var margin := MarginContainer.new()
 	for side in ["left", "right", "top", "bottom"]:
-		margin.add_theme_constant_override("margin_" + side, 14)
+		margin.add_theme_constant_override("margin_" + side, 4)
 	panel.add_child(margin)
 
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 14)
 	margin.add_child(row)
 
+	# Portrait sits inside a decorative frame (the frame art stretches to fill).
+	var portrait_frame := PanelContainer.new()
+	portrait_frame.custom_minimum_size = Vector2(96, 96)
+	portrait_frame.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	UiSkin.apply_panel(portrait_frame, "res://assets/ui/npc_portrait_frame.png", 12.0, 0.0)
+	row.add_child(portrait_frame)
+
 	_portrait = TextureRect.new()
-	_portrait.custom_minimum_size = Vector2(96, 96)
+	_portrait.custom_minimum_size = Vector2(72, 72)
 	_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	row.add_child(_portrait)
+	portrait_frame.add_child(_portrait)
 
 	var col := VBoxContainer.new()
 	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	col.add_theme_constant_override("separation", 8)
 	row.add_child(col)
 
+	# Name on a little nameplate banner.
 	_name = Label.new()
+	_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_name.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	_name.custom_minimum_size = Vector2(180, 40)
+	_name.add_theme_stylebox_override("normal", UiSkin.panel_box("res://assets/ui/dialogue_nameplate.png", 10.0, 18.0))
 	col.add_child(_name)
 
 	_text = Label.new()

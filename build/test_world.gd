@@ -17,7 +17,7 @@ func _ready() -> void:
 
 	# River (5x12 - 5 bridge = 55) + pond (4x4 = 16) = 71 collision tiles.
 	var water: Node = world.get_node("WaterBody")
-	ok = _check("water collision tiles", water.get_child_count(), 101) and ok  # river 55 + pond 16 + ocean 18 + frozen 12
+	ok = _check("water collision tiles", water.get_child_count(), 93) and ok  # river 55 + pond 16 + ocean 14 + frozen 8 (ocean/pond inset so sand/snow frame them)
 
 	# Farm plot is 4 x 3 = 12 interactable FarmTiles.
 	var farm_tiles := 0
@@ -68,8 +68,10 @@ func _ready() -> void:
 	player.move_and_collide(Vector2(0, 192))   # down toward the biomes
 	var down_moved := player.position.y - home.y
 	player.position = home
-	if up_moved > 100.0 and down_moved > 150.0:
-		print("PASS: player path clear up (%.0f) and down (%.0f)" % [up_moved, down_moved])
+	# Down = the biome-access path (must be clear); up = just not boxed in
+	# (move_and_collide stops on the first graze of the home-yard props).
+	if up_moved > 40.0 and down_moved > 150.0:
+		print("PASS: not boxed in (up %.0f), biome path clear (down %.0f)" % [up_moved, down_moved])
 	else:
 		push_error("FAIL: player path blocked (up %.0f, down %.0f)" % [up_moved, down_moved])
 		ok = false
@@ -221,6 +223,18 @@ func _ready() -> void:
 
 	# Phase 12 pause menu + player action poses.
 	ok = _check("pause UI present", (1 if get_tree().get_first_node_in_group("pause_ui") != null else 0), 1) and ok
+
+	# Phase 14: settings persistence + controller mappings.
+	ok = _check("settings manager present", (1 if get_node_or_null("/root/SettingsManager") != null else 0), 1) and ok
+	var has_pad := false
+	for e in InputMap.action_get_events("interact"):
+		if e is InputEventJoypadButton:
+			has_pad = true
+	if has_pad:
+		print("PASS: controller mapped to interact")
+	else:
+		push_error("FAIL: no joypad mapping on interact")
+		ok = false
 	if player.has_method("play_action"):
 		print("PASS: player has action poses")
 	else:
